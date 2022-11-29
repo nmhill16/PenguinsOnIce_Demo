@@ -1,0 +1,3352 @@
+<!doctype html>
+<html id="html">
+
+  <head>
+    <title>Penguins on Ice - REI_v13_Demo</title>
+
+    <!-- *** CSS *** -->
+    <link rel='stylesheet' type='text/css' href='style.css'>
+
+    <!-- *** BOWSER *** -->
+    <script src="https://unpkg.com/bowser@2.4.0/es5.js"></script>
+    
+    <!-- *** GL-MATRIX *** -->
+    <script src ='https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js'></script>
+
+    <!-- *** SIZEOF *** -->
+    <script src="sizeof.js"></script>
+    
+    <!-- *** WJS *** -->
+    <script src="wjs_core_ec.js"></script>
+
+    <!-- *** FIREBASE *** -->
+    <script src='/__/firebase/7.13.2/firebase-app.js'></script>
+    <script src='/__/firebase/7.13.2/firebase-auth.js'></script>
+    <script src='/__/firebase/7.13.2/firebase-database.js'></script>
+    <script src='/__/firebase/init.js'></script>
+
+
+  </head>
+  <body id="body">
+
+    <div id="page-content" class="display-element">
+      
+      <div id="homepage-content">
+        <h1>Welcome to Penguins on Ice!! </h1>
+        <h4>This game must be played in full screen. Click the button to continue.</h4>
+        <div><button id="homepage-fullscreen-button" class="button">Enter full screen mode</button></div>
+        <div><button id="crash-button" class="button" disabled>Program Crashed? Upload Data</button></div>
+        <p>~~~~~~~~~~</p>
+        <p>Game Version: REI_v13_Demo</p>
+      </div>
+
+      <div id="chrome-required-content">
+        <p>Uh oh!<br>This experiment requires Google Chrome.<br>
+        Please copy the full URL and reopen it in Chrome.<br>
+        Thank you! We apologize for any inconvenience.</p>
+      </div>
+      
+      <div id="desktop-required-content">
+        <p>Uh oh!<br>This experiment is not supported on mobile devices.<br>
+        Please open it on a computer using Google Chrome.<br>
+        Thank you! We apologize for any inconvenience.</p>
+      </div>
+
+      <div id="survey-content">
+        <h3>Please enter your subject ID and select the appropriate options.</h3>
+        <form id="survey-form">
+          <p class="survey-q" id="subjID">Enter the subject ID exactly as it was provided to you (including capitalization):</p>
+          <input type="text" name="subjID" minlength=5 maxlength=8 required>
+
+          <p class="survey-q" id="age">How old are you?</p>
+          <select name="age" required>
+            <option value="" disabled selected>Select your age</option>
+            <option value="Year3">3 years</option>
+            <option value="Year4">4 years</option>
+            <option value="Year5">5 years</option>
+            <option value="Year6">6 years</option>
+            <option value="Year7">7 years</option>
+            <option value="Year8">8 years</option>
+            <option value="Year9">9 years</option>
+            <option value="Year10">10 years</option>
+            <option value="Year11">11 years</option>
+            <option value="Year12">12 years</option>
+            <option value="Year13">13 years</option>
+            <option value="Year14">14 years</option>
+            <option value="Year15">15 years</option>
+            <option value="Year16">16 years</option>
+            <option value="Year17">17 years</option>
+            <option value="Year18Plus">18+ years</option>
+          </select>
+
+          <p class="survey-q" id="sex">Select your sex (as reported during participant screening):</p>
+          <select name="sex" required>
+            <option value="" disabled selected>Select your sex</option>
+            <option value="F">Female</option>
+            <option value="M">Male</option>
+          </select>
+
+          <p class="survey-q" id="inputdevice">Are you using a mouse, trackpad, or touchscreen?</p>
+          <select name="inputdevice" required>
+            <option value="" disabled selected>Select your device</option>
+            <option value="Mouse">Mouse</option>
+            <option value="Track">Trackpad</option>
+            <option value="Touch">Touchscreen</option>
+          </select>
+
+          <p class="survey-q" id="hand">Which hand to do you use to control the mouse/trackpad or use the touchscreen?</p>
+          <select name="hand" required>
+            <option value="" disabled selected>Select your hand</option>
+            <option value="R">Right</option>
+            <option value="L">Left</option>
+          </select>
+          <div><button class="button" id="survey-button" type="submit" disabled>Continue</button></div>
+        </form>
+      </div>
+
+      <div id="crash-content">
+        <h3>Please enter your subject ID exactly as before.</h3>
+          <input type="text" id = "crashedSubjID" name="subjID" minlength=5 maxlength=21 required>
+          <div><button id="loadCrash-button" class="button">Continue</button></div>
+      </div>
+
+      <div id="crashDataLoaded-content">
+        <h3>Data reload was successful. You can continue the game where you left off.</h3>
+          <div><button id="crashDataLoaded-button" class="button">Continue</button></div>
+      </div>
+
+      <div id="crashDataNotLoaded-content">
+        <h3>Data reload was unsuccessful for the Subject ID entered. Please return to the home screen to start a new game.</h3>
+          <div><button id="crashDataNotLoaded-button" class="button">Return to home screen</button></div>
+      </div>
+
+      <div id="fullscreen-content">
+        <h3>This game must be run in full screen.</h3>
+        <div><button id="fullscreen-button" class="big-button">Continue Game</button></div>
+        <br><br><br><br><br><br>
+        <p><button id="quit-button" class="button">Quit Game</button></p>
+      </div>
+      
+      <div id="pointerlock-content">
+        <h3>Click the "START" button to start the game! </h3> 
+        <h4>If using a mouse or trackpad, your pointer will be hidden. </h4>
+        <div><button id="pointerlock-button" class="big-button">START</button></div>
+      </div>
+
+      <div id="block1_instructions-content">
+        <div class="block1_instructions-header">
+          <h3> Penguins on Ice Instructions</h3>
+          <h4> ~ Block 1 | 20 Trials ~</h4>
+          <p class="block1_instructions-body">
+            Move all the way across the ice to join the penguins on the other side. Get as close to them as you can. If you get close enough to high five them, you will get to watch the movie clip. <br><br>
+            If using a mouse or trackpad, click your left mouse button once to activate the blue penguin. If using a touchscreen, press the blue penguin with your finger and you will be able to move it.
+            Move your hand forward to move the penguin across the ice to the penguins on the other side.
+            There are 20 trials. <br>
+          </p>
+        </div>
+        <p style="margin-bottom: 0;">Click the "ENTER" button to continue.</p>
+        <button class="button" id="block1_instructions-button" disabled>ENTER</button>
+      </div>
+
+      <div id="block2_instructions-content">
+        <div class="block2_instructions-header">
+          <h3> Penguins on Ice Instructions</h3>
+          <h4> ~ Block 2 | 120 Trials ~</h4>
+          <p class="block2_instructions-body">
+            Now there are several penguins on the other side of the ice. But oh no, some of the ice is starting to melt! You still need to get to the other side but be careful, there is a patch of ice that may be slippery!
+            In some places you will slip a lot of the time, in some places you will slip some of the time, and in some places you will never slip. <br><br>
+            If you make it across without slipping, you will get to watch the movie clip. Try to get the movie clip to play as often as you can. There are 120 trials. <br>
+          </p>
+        </div>
+        <p style="margin-bottom: 0;">Click the "ENTER" button to continue.</p>
+        <button class="button" id="block2_instructions-button" disabled>ENTER</button>
+      </div>
+
+      <div id="block5_instructions-content">
+        <div class="block5_instructions-header">
+          <h3> Penguins on Ice Instructions</h3>
+          <h4> ~ Block 3 | 10 Trials ~</h4>
+          <p class="block5_instructions-body">
+            Great job! You made it through the slippery ice. In this last section, cross the ice to join the penguins on the other side. 
+            Again, if you get close enough to high five them, you will get to watch the movie clip. Try to get the movie clip to play as often as you can. 
+            There are 10 trials. <br>
+          </p>
+        </div>
+        <p style="margin-bottom: 0;">Click the "ENTER" button to continue.</p>
+        <button class="button" id="block5_instructions-button" disabled>ENTER</button>
+      </div>
+
+      <div id="postTaskQuestions-content">
+        <div class="postTaskQuestions-header">
+          <h3> Post Game Questions</h3>
+          <h4> ~ You made it through all of the trials! ~</h4>
+          <p class="postTaskQuestions-body">
+            There are 3 questions for you to answer before you go. <br>
+          </p>
+        </div>
+        <p style="margin-bottom: 0;">Click the "ENTER" button to continue.</p>
+        <button class="button" id="postTaskQuestions-button" disabled>ENTER</button>
+      </div>
+
+      <div id="trial-content" class="noselect">
+        <canvas id="2d-canvas" style="z-index: 2"></canvas>
+        <canvas id="3d-canvas"></canvas>
+      </div>
+
+      <div id="end-content">
+        <h3>You have finished the game. Thank you for playing! </h3> 
+        <h4>You may now close the browser. </h4>
+      </div>
+
+      <div id="endEarly-content">
+        <h3>Thank you for playing! </h3> 
+        <h4>You may now close the browser. </h4>
+      </div>
+
+      <div id="connection-content" class="display-element">
+        <h3>Attempting to connect to data server. Please wait...</h3>
+        <p>The game will resume automatically when you have reconnected.</p>
+        <p>If nothing is happening, please check your internet connection.</p>
+      </div>
+
+      <div id="screenOrientation-content">
+         <h1>Welcome to Penguins on Ice!! </h1>
+         <h3>For best performance, this game must be played with your device oriented in landscape. Please rotate your device.</h3>
+      </div>
+
+      <div id="screenOrientationChange-content">
+         <h1>You have rotated your device! </h1>
+         <h3>Please rotate your device back to landscape to continue the game.</h3>
+      </div>
+
+      <div id="phoneDetected-content">
+         <h1>Welcome to Penguins on Ice!! </h1>
+         <h3>For best performance, this game must be played on a different device. Please try again using a computer or tablet.</h3>
+        <p>Please contact the experimenter if you have any questions. Thank you!</p>
+      </div>
+
+    <script>
+      'use strict';
+      // Define game setup variables 
+      var subjID;
+      var inputdevice;
+      var startDate;
+      var startTouch = [0,0];
+      var preGameStart = true; 
+      var ballClicked = false;
+      var XoutOfBounds = false;
+      var YoutOfBounds = false;
+      var subjCrashedData = null;
+      var crashDataLoaded = false;
+      var gameAttemptNum = 0;
+      var correctOrientation = true;
+      var previousScreen = 'fullscreen-content'
+
+      // Audio Files
+      var block1AudioInstructions = new Audio('IB_Block1_v3.wav');
+      var block2AudioInstructions = new Audio('IB_Block2_v3.wav');
+      var block5AudioInstructions = new Audio('IB_Block5.wav');
+      var postTaskQuestionsAudioInstructions = new Audio('PostGameQuestions.wav');
+      var Q1 = new Audio('Question1.wav');
+      var Q2 = new Audio('Question2.wav');
+      var Q3 = new Audio('Question3.wav');
+      var gameEndSound = new Audio('Victory SoundFX2.wav');
+      //var gameStartSound = new Audio('DM-CGS-45.wav');
+      var gameStartSound = new Audio('ui_accept_5.wav');
+      var successSound = new Audio('DM-CGS-32.wav');
+
+      // Set experiment name
+      // IMPORTANT: expName must match the experiment name in your project directory
+	  var expName = 'Reinforcement_IceBar_JavaScript_V13_Demo';
+
+      // Set Game Version
+      var gameVersion = 'REI_v13_Demo'
+      
+      // IMPORTANT: Set to false before deploying
+      var logFlag = false; // print messages to debug console?
+      bypassForms(false); // allow user to skip consent and survey forms?
+
+      // IMPORTANT: Set to true before deploying
+      // (if false, does not upload data to firebase. Helpful for testing/debuging locally)
+      var useFirebase = false; //for test mode, set to false, to deploy, set to true
+
+      // Game Setup Parameters
+      var requireFullscreen = true; // requires entering fullscreen before continuing game
+      var requireChrome = false;   // No browser limitations
+      var requireDesktop = false; // Allows use on mobile devices
+      var mobilePlatform = false; // Check whether running on mobile or desktop
+
+      // Initialize the 2d canvas
+      var canvas = document.getElementById("2d-canvas");
+      var canvasContext = canvas.getContext("2d");
+
+      // Initialize the 3d canvas
+      var glCanvas = document.getElementById("3d-canvas");
+      var gl = glCanvas.getContext("webgl2");
+      initWebGL(gl);
+
+      // Intialize shaders
+      const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+      const shadowShaderProgram = initShaderProgram(gl,shadowVsSource,shadowFsSource);
+      
+      // Initialize camera
+      const camera = {};
+      // gl, shader, position, focalPoint, near, far, fov
+      initCamera(gl, shaderProgram, [0, -25, 18], [0, 20, 0], 20, 80, 45);
+
+      // Initialize lighting (x, y, z, w)
+      // w = 1 for point light, 0 for directional light
+      // Remember to change '#define NR_LIGHTS' in the fragment shader if you add lights here
+      const lightPositions = [[10, -25, 25, 0]];
+      // If shadows, you must initCamera() first
+      // For no shadows, simply omit the shadows argument of initLighting
+      //const shadows = { lightIndex:0, textureUnit: 2, textureSize: 1024 };
+      const shadows = { lightIndex:0, textureUnit: 2, textureSize: 4096 };
+      const light = initLighting(gl, shaderProgram, lightPositions, shadows);
+      
+      // Initialize textures
+      // Be careful not to use the shadowMapTextureUnit assigned above!
+      gl.activeTexture(gl.TEXTURE0); // default white (multiplies with material.diffuseColor)
+      const defaultTexture = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, defaultTexture);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255,255,255,255]));
+      
+      gl.activeTexture(gl.TEXTURE1);  // video texture
+      const videoTexture = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, videoTexture);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255,0,255,255]));
+
+      // Any pictures/images to be displayed on the 3D canvas are set here 
+      initTextureImage('Sparkles_2.png',3); // sparkles for the ice bar
+      //initTextureImage('CartoonClouds_2048x2048.png',4); // clouds image
+      initTextureImage('ManyPenguins_Filled_v2.jpg',4); // snow rocks penguins
+      initTextureImage('SadPenguin_ClipArt.png',5) // sad face penguin
+      initTextureImage('Arrow.png',6) // arrow image
+      initTextureImage('HappyFeetPenguin_ClipArt.jpg',7); // happy feet penguin
+      initTextureImage('Three_Penguins.png',8); // group of penguins
+      initTextureImage('Arrows_Question3-05.png',9); // Left arrow
+      initTextureImage('Arrows_Question3-06.png',10); // Right arrow
+
+      // be careful not to use shadows.textureUnit for anything else (check above)
+
+      // Initialize game objects
+
+      // This is the home disc
+      const home = genDiskMesh();
+      home.VAO = initVAO(gl,home,shaderProgram);
+      home.positions = [[0,0,0.01]];
+      home.orientations = [[0,0]];
+      home.scaleXYZ = [[3,3,1]];
+      home.inactiveColor = [0.3, 0.3, 0.3];
+      home.activeColor = [0.5, 0.1, 0.1];
+      home.diffuseColors = [home.inactiveColor];
+      // extra properties for game logic
+      home.radius = home.scaleXYZ[0][0];
+      home.position = [0, 0];
+      
+      // This is the ball/cursor sphere
+      //const cursor = genIcosphereMesh();
+      const cursor = genCubeMesh();
+      cursor.VAO = initVAO(gl,cursor,shaderProgram);
+      cursor.positions = [[0,0,1]];
+      cursor.orientations = [[0,0]];
+      cursor.scaleXYZ = [[2,.1,2]];
+      //cursor.activeColor = [0,0.7,0.0];
+      //cursor.activeColor = [[173/255,216/255,230/255]];
+      cursor.activeColor = [1,1,1];
+      //cursor.inactiveColor = [173/255,173/255,173/255];
+      cursor.inactiveColor = [70/255,130/255,180/255];
+      cursor.diffuseColors = [cursor.inactiveColor];
+      cursor.diffuseMaps = [7];
+      // extra properties for game logic
+      cursor.radius = cursor.scaleXYZ[0][0]/2;
+      cursor.position = [0,0];
+      cursor.actualPosition = [0,0];
+      cursor.display = [0,0];
+      cursor.xmin = -24;
+      cursor.xmax = 24;
+      cursor.ymin = -4;
+      cursor.ymax = 40;
+      cursor.ydisplaymax = 25;
+      cursor.speedScalar = 0.02; // originally 0.05
+      
+      // This is the moving cube shaped target from Evan (Not used in this current game version)
+      const target = genCubeMesh();
+      target.VAO = initVAO(gl,target,shaderProgram);
+      target.orientations = [[0,0]];
+      target.scaleXYZ = [[2,2,2]];
+      target.positions = [[0,0,target.scaleXYZ[0][2]/2]];
+      target.diffuseColors = [[0,1,1]];
+      // extra properties for game logic
+      target.radius = target.scaleXYZ[0][0];
+      //target.position = [0,0];
+
+      // This is the game play floor 
+      const floor = genQuadMesh();
+      floor.VAO = initVAO(gl,floor,shaderProgram);
+      floor.positions = [[0,10,0]];
+      floor.orientations = [[-Math.PI/2,0]];
+      floor.scaleXYZ = [[50,0,30]];
+      floor.diffuseColors = [[173/255,216/255,230/255]]; //[[210/255,180/255,140/255]];
+      floor.specularColors = [[1,1,1]];
+      floor.diffuseMaps = [0];
+      floor.specularMaps = [0];
+
+      // This is the horizontal ice bar
+      const iceBar = genCubeMesh();
+      iceBar.VAO = initVAO(gl,iceBar,shaderProgram);
+      iceBar.orientations = floor.orientations;
+      iceBar.positions = [[0,22,0]];
+      iceBar.scaleXYZ = [[50,.01,2.5]];
+      iceBar.diffuseColors = [[1,1,1]]; //[[173/255,216/255,230/255]];
+      iceBar.specularColors = [[1,1,1]];
+      iceBar.diffuseMaps = [3];
+      iceBar.specularMaps = [0];
+      // extra properties for game logic
+        iceBar.distance = 22;
+        iceBar.position = [0,iceBar.distance];
+
+      // This is the video screen where the video clips are displayed
+      const screenBackground = genQuadMesh(); // Using this screen to display videos
+      screenBackground.VAO = initVAO(gl,screenBackground,shaderProgram);
+      //screenBackground.orientations = [[0,0]];
+      //screenBackground.scaleXYZ = [[51,1,18]];
+      //screenBackground.positions = [[0,floor.positions[0][1]+floor.scaleXYZ[0][2]/2 + 1,screenBackground.scaleXYZ[0][2]/2 - 2]];
+      screenBackground.positions = [[0,floor.positions[0][1]+floor.scaleXYZ[0][2]/2,10]];
+      screenBackground.orientations = [[0,0]];
+      screenBackground.scaleXYZ = [[22,1,22 *(9/16)]];
+      screenBackground.diffuseColors = [[1,1,1]];
+      screenBackground.specularColors = [[1,1,1]];
+      screenBackground.diffuseMaps = [1]; // video texture
+      //extras
+       var videoURLs = videos();
+       const video = setupVideo('',screenBackground);
+      
+      // This is the video screen highlight border to indicate success if video does not play
+      const screenBorder = genQuadMesh();
+      screenBorder.VAO = initVAO(gl,screenBorder,shaderProgram);
+      screenBorder.positions = [[0,floor.positions[0][1]+floor.scaleXYZ[0][2]/2 + 8,9.75]];
+      screenBorder.orientations = [[0,0]];
+      screenBorder.scaleXYZ = [[24,1,24 *(9/16)]];
+      screenBorder.diffuseColors = [[135/255,206/255,250/255]];
+      screenBorder.specularColors = [[1,1,1]];
+      screenBorder.diffuseMaps = [0];
+
+      // This is the group of penguins across the pond
+      const penguinGroup = genQuadMesh(); // Using this screen to display videos
+      penguinGroup.VAO = initVAO(gl,penguinGroup,shaderProgram);
+      penguinGroup.orientations = [[0,0]];
+      penguinGroup.scaleXYZ = [[3,1,3*(677/958)]];
+      penguinGroup.positions = [[0,floor.positions[0][1]+floor.scaleXYZ[0][2]/2,penguinGroup.scaleXYZ[0][2]/2]];
+      penguinGroup.diffuseColors = [[1,1,1]];
+      penguinGroup.specularColors = [[1,1,1]];
+      penguinGroup.diffuseMaps = [8]; // group of penguins
+      // extra properties for game logic
+        penguinGroup.position = [0,floor.positions[0][1]+floor.scaleXYZ[0][2]/2,penguinGroup.scaleXYZ[0][2]/2];
+
+      // This is the game backdrop 
+      const gameBackdrop = genQuadMesh();
+      gameBackdrop.VAO = initVAO(gl,gameBackdrop,shaderProgram);
+      gameBackdrop.orientations = [[-Math.PI/18,0]];
+      //gameBackdrop.scaleXYZ = [[canvas.width/2,1,canvas.height/2]];
+      gameBackdrop.scaleXYZ = [[92,1,92*(1920/2560)]];
+      gameBackdrop.positions = [[0,floor.positions[0][1]+floor.scaleXYZ[0][2]/2 + 3,2]]; // Was 5.25
+      gameBackdrop.diffuseColors =  [[1,1,1]]; //[[173/255,216/255,230/255]];
+      gameBackdrop.diffuseMaps = [4]; // Clouds background
+
+      // This is the game enviornment floor (below the game play floor)
+      const gameEnvironmentBottom = genQuadMesh();
+      gameEnvironmentBottom.VAO = initVAO(gl,gameEnvironmentBottom,shaderProgram);
+      gameEnvironmentBottom.orientations = [[-Math.PI/2,0]];
+      gameEnvironmentBottom.scaleXYZ = [[100,0,100]];
+      gameEnvironmentBottom.positions = [[0,13.5,-.01]];
+      gameEnvironmentBottom.diffuseColors = [[222/255, 226/255, 232/255]]; //[[0,0.5,0]];
+      gameEnvironmentBottom.specularColors = [[1,1,1]];
+      gameEnvironmentBottom.diffuseMaps = [0];
+      gameEnvironmentBottom.specularMaps = [0];
+
+      // Images that appear throughout the game
+
+      // Sad Face
+      const sadFace = genQuadMesh();
+      sadFace.VAO = initVAO(gl,sadFace,shaderProgram);
+      sadFace.orientations = [[0,0]];
+      sadFace.scaleXYZ = [[5,1,5]];
+      sadFace.positions = [[0,gameBackdrop.positions[0][1]+4,12]];
+      sadFace.diffuseColors = [[1,1,1]];
+      sadFace.diffuseMaps = [5]; // SadFace
+
+      // Out of Boundary Arrows
+      const moveRightArrow = genQuadMesh();
+      moveRightArrow.VAO = initVAO(gl,moveRightArrow,shaderProgram);
+      moveRightArrow.orientations = [[-Math.PI/2,0]];
+      moveRightArrow.scaleXYZ = [[4,0,4]];
+      moveRightArrow.positions = [[floor.positions[0][0]-20,floor.positions[0][1],-2]];
+      moveRightArrow.diffuseColors = [[173/255,216/255,230/255]]; //[[210/255,180/255,140/255]];
+      moveRightArrow.diffuseMaps = [6]; // Arrow
+
+      const moveLeftArrow = genQuadMesh();
+      moveLeftArrow.VAO = initVAO(gl,moveLeftArrow,shaderProgram);
+      moveLeftArrow.orientations = [[-Math.PI/2,-Math.PI]];
+      moveLeftArrow.scaleXYZ = [[4,0,4]];
+      moveLeftArrow.positions = [[floor.positions[0][0]+20,floor.positions[0][1],-2]];
+      moveLeftArrow.diffuseColors = [[173/255,216/255,230/255]]; //[[210/255,180/255,140/255]];
+      moveLeftArrow.diffuseMaps = [6]; // Arrow
+
+      const moveUpArrow = genQuadMesh();
+      moveUpArrow.VAO = initVAO(gl,moveUpArrow,shaderProgram);
+      moveUpArrow.orientations = [[-Math.PI/2,Math.PI/2]];
+      moveUpArrow.scaleXYZ = [[4,0,4]];
+      moveUpArrow.positions = [[floor.positions[0][0],home.positions[0][1]+5,-2]];
+      moveUpArrow.diffuseColors = [[173/255,216/255,230/255]]; //[[210/255,180/255,140/255]];
+      moveUpArrow.diffuseMaps = [6]; // Arrow
+
+      const leftArrow = genQuadMesh();
+      leftArrow.VAO = initVAO(gl,leftArrow,shaderProgram);
+      leftArrow.orientations = [[-Math.PI/2,0]];
+      leftArrow.scaleXYZ = [[10,0,15]];
+      leftArrow.positions = [[floor.positions[0][0]-6,home.positions[0][1]+12,.1]];
+      leftArrow.diffuseColors = [[173/255,216/255,230/255]]; //[[210/255,180/255,140/255]];
+      leftArrow.diffuseMaps = [9]; // LeftArrow
+
+      const rightArrow = genQuadMesh();
+      rightArrow.VAO = initVAO(gl,rightArrow,shaderProgram);
+      rightArrow.orientations = [[-Math.PI/2,0]];
+      rightArrow.scaleXYZ = [[10,0,15]];
+      rightArrow.positions = [[floor.positions[0][0]+6,home.positions[0][1]+12,.1]];
+      rightArrow.diffuseColors = [[173/255,216/255,230/255]]; //[[210/255,180/255,140/255]];
+      rightArrow.diffuseMaps = [10]; // Right Arrow
+
+      // Initialize finite state machine
+      //const stateNames = ['PAUSE', 'START', 'DELAY', 'GO', 'MOVING', 'RETURN', 'FINISH', 'ADVANCE', 'FULLSCREEN', 'CONNECTION'];
+      const stateNames = ['PAUSE', 'START', 'GO', 'MOVING', 'RETURN', 'FINISH', 'ADVANCE', 'FULLSCREEN', 'CONNECTION']; // removed DELAY state
+      var state = new State(stateNames, handleStateChange);
+
+      // Initialize anything else that is used before initTrial() is called
+      var points = {earned: 0, text: currencyFormatter.format(0)};
+      var feedbackText = '';
+      var instructionText = '';
+      var questionAnsweredText = '';
+      
+      // Construct Trial Sequence
+      var numDemoTrials = 10; // set demo trial length
+      //var numTrials = [2,4,1,1,1,1,1,1]; // Small set of trials for testing 
+      var numTrials = [20,100,10,10,10,1,1,1]; // Set number of trials for each block
+
+      // Construct Penguin Group Sequence for Block 1
+      var distanceToIce = 24; // distance from home position to ice bar
+      var successWidth = 5; // width of the section that rewards 100%
+      var penguinGroupPositions = linspace(-18,18,numTrials[0]); // total positions = number of trials
+      var penguinGroupSequence = shuffle(Array.from({length: penguinGroupPositions.length}, (v, i) => i));
+
+      // Set video playback sequence
+      var videoOrder = shuffle(Array.from({length: videoURLs.length}, (v, i) => i));
+
+      // Construct Perturbation Sequence
+      var perturbationThreshold = 10;
+      var block1perturbationSequence = new Array(numTrials[0]).fill(0);
+      var block2perturbationSequence = new Array(numTrials[1]).fill(0);
+      var block3perturbationSequence = new Array(numTrials[2]).fill(0);
+      var block4perturbationSequence = new Array(numTrials[3]).fill(0);
+      var block5perturbationSequence = new Array(numTrials[4]).fill(0);
+      var block6perturbationSequence = new Array(numTrials[5]).fill(0);
+      var block7perturbationSequence = new Array(numTrials[6]).fill(0);
+      var block8perturbationSequence = new Array(numTrials[7]).fill(0);
+      var perturbationSequence = [];
+      
+      perturbationSequence.push(block1perturbationSequence,block2perturbationSequence,block3perturbationSequence,block4perturbationSequence,block5perturbationSequence,block6perturbationSequence,block7perturbationSequence,block8perturbationSequence);
+
+      var trialNumber = 0;
+      var displayTrialNumber = 1; // for display text on the canvas
+      var blockNumber = 0;
+      var blockTransition = false;
+      var resetToStartState = false;
+      var trial; // this will be the trial data object
+      var trajMatrix; // this will be the trajectory data matrix object
+
+      var conttrial = 0; // for data saving one line per trial
+      var conttraj = 0; // for data saving one line per frame
+      var contTrajTrial = 0; // for data saving all trajectories for one trial in one array
+      var numReleased = 0; // to track if the ball is released during the trial
+      var endInterpolated = false;
+      var trialEnded = false;
+      var resultChecked = false;
+      var screenRefreshRate; // to collect the refresh rate of the screen at the end of the trial
+      var calculatedInitialAngle = false;
+      var initialAngleCalcPoint = distanceToIce * 0.05; // calculate initial angle when the ball has reached 5% of the distance to ice edge
+
+      // timestamp variables
+      var timeStamps = {
+        startTrialTimestamp: [],
+        ballClickedTimestamp: [],
+        endTrialTimestamp: [],
+        trialNumber: 'timestamps',
+      }
+
+      // crashfile variables
+      var crashFile = {
+        subjID_crash: subjID,
+        uid_crash: uid,
+        device_crash: inputdevice,
+        blockNumber_crash: 0,
+        trialNumber_crash: 0,
+        displayTrialNumber_crash: 0,
+        startDate_crash: 0,
+        conttrial_crash: 0,
+        conttraj_crash: 0,
+        penguinGroupSequence_crash: [],
+        videoOrder_crash: [],
+        timeStamps_crash: timeStamps,
+        gameAttemptNum_crash: gameAttemptNum,
+      }
+
+      addEventListeners();
+      mainLoopFunc(); // requires calcFunc(), stateFunc(), and displayFunc() to be defined
+
+      function initTrial(trialNumber,blockNumber) {
+        trial = {
+          // static params
+          targetDistance: distanceToIce,
+          returnMethod: 'warp', //'move'
+          // dynamic params
+          trialNumber: trialNumber,
+          blockNumber: blockNumber,
+          conttrial: conttrial,
+          buttonHit: 77,
+          startTrialTime: performance.now(),
+          demoTrial: false, //trialNumber===0,
+          postTaskQuestions: false,
+          screenRefreshRate: screenRefreshRate,
+          // reset params
+          endTrialTime: 0,
+          distanceTraveled: 0,
+          // reset data arrays
+          dxCo: [],
+          dyCo: [],
+          tCo: [], 
+          stateCo: [],
+          conttrajArray: [],
+          stateChange: [],
+          stateChangeTime: [],
+          startTouchPosition: [],
+          //allTrajectories: [], // data for whole trial - will be t, blockNumber, trialNumber, touch/mouse input data, ball positions, ball angles, state
+          videoLoadTimes: [], // Array to track how long it takes to load the first frame of the video file
+          screenRefreshTime: [], // Array to track the time of each screen refresh
+        };
+        // Array variables
+        trajMatrix = {
+          conttraj: 0,
+          conttrial: conttrial,
+          contTrajTrial: 0,
+          trialNumber: 'trajMatrix',  
+          // reset data arrays
+          data: [], // single frame of data - will be t, blockNumber, trialNumber, touch/mouse input data, ball positions, ball angles, state
+        };
+
+        timeStamps.startTrialTimestamp[conttrial] = getFormattedDateObject().string;
+
+        // dynamic params dependent on params set in the object constructor
+        // (could assign these in the object constructor but this is often easier)
+        trial.perturbation = perturbationSequence[blockNumber][trialNumber];
+        
+        // apply any condition-specific parameters/settings
+        // (could do this outside of initTrial if they are not trial-specific)
+        if (trial.condition===0){ }
+        
+        // reset parameters of game objects
+        cursor.delta = [0, 0];
+        cursor.cumDelta = [0, 0];
+        cursor.angle = 0;
+        cursor.displayAngle = 0;
+        cursor.cross = [null, null];
+        cursor.perturb = trial.perturbation;
+        cursor.hit = 0;
+        cursor.disableMovement = true;
+        cursor.position = [...home.position];
+        cursor.actualPosition = [...home.position];
+        setDisplayedCursorPosition();
+
+        endInterpolated = false;
+        trialEnded = false;
+        resultChecked = false;
+        numReleased = 0;
+        calculatedInitialAngle = false;
+        ballClicked = false;
+        XoutOfBounds = false;
+        YoutOfBounds = false;
+
+        // Set Target Parameter for the current trial 
+        target.perturbation = trial.perturbation;
+        target.distance = distanceToIce;
+        //target.boundaries = trial.boundaries;
+        //target.diffuseColors = [[0,1,1]];
+
+        if(blockNumber == 0){
+            penguinGroup.position[0] = penguinGroupPositions[penguinGroupSequence[trialNumber]];
+            penguinGroup.positions[0][0] = penguinGroupPositions[penguinGroupSequence[trialNumber]];
+            target.position = penguinGroup.position;
+            target.positions[0] = penguinGroup.positions;
+            target.scaleXYZ = penguinGroup.scaleXYZ;
+
+            floor.scaleXYZ[0][2] = 28;
+
+        } else if (blockNumber == 4 || blockNumber == 5){
+            penguinGroup.position[0] = 0;
+            penguinGroup.positions[0][0] = 0;
+            target.position = penguinGroup.position;
+            target.positions[0] = penguinGroup.positions;
+            target.scaleXYZ = penguinGroup.scaleXYZ;
+            
+            floor.scaleXYZ[0][2] = 28;
+
+        } else{
+            target.position = iceBar.position;
+            target.positions[0] = iceBar.positions;
+            target.scaleXYZ = iceBar.scaleXYZ;
+
+            floor.scaleXYZ[0][2] = 28;
+        }
+
+        video.ready = false;
+        //video.src = "https://giphy.com/media/j80foFNSOVrK/giphy.mp4"; //Broken video link for testing
+        //video.src = "https://media.giphy.com/media/12gy1aGOnShDwI/giphy.mp4"; //MickeyMouse Fantasia Video
+        video.src = videoURLs[videoOrder[conttrial]];
+        //video.src = videoURLs[0];
+        video.load();
+        trial.videoLoadTimes[0] = performance.now(); // time in main loop after video load is called 
+        
+        // reset flags and timers
+        saveSuccessful = false;
+        saveSuccessful_trial = false;
+        saveSuccessful_timeStamps = false;
+        saveSuccessful_crash = false;
+        saveSuccessful_button = false;
+        trialTimer.reset();
+        dtTimer.reset();
+        
+        // For the case of transitioning between blocks, trial logic started after pointer is re-locked
+        if(!blockTransition){
+            // start the trial logic
+            state.next(state.START);
+        } 
+
+        // Set the post task questions condition
+        /*if (blockNumber == 5 || blockNumber == 6 || blockNumber == 7){
+            trial.postTaskQuestions = true;
+        }
+        */
+        if (blockNumber == 5){
+            trial.postTaskQuestions = true;
+            // Play Q1 instructions after the 'ENTER' button is selected
+        }
+
+        if (blockNumber == 6){
+            trial.postTaskQuestions = true;
+            Q2.play();
+        }
+
+        if (blockNumber == 7) {
+            trial.postTaskQuestions = true;
+            Q3.play();
+            
+            // Disable Pointer Lock for Arrow Question
+           if(inputdevice =="Touch"){
+               PL = true;
+           } else{
+               document.exitPointerLock();
+               consoleLog("pointer lock disabled")
+           }
+        } 
+
+      }
+
+      function calcFunc() {
+        if (!trial) { return; }
+        
+        var dt = dtTimer.elapsedMSec();
+        dtTimer.reset();
+        
+        cursor.speed = distance(cursor.delta, [0, 0]); // compute speed
+        trial.distanceTraveled += cursor.speed * cursor.speedScalar; // accumulate distanceTraveled
+        cursor.delta = [0, 0]; // reset to zero (critical!)
+
+        // Test if the cursor is at home
+        cursor.atHome = isHome(cursor.display, home.position, home.radius - cursor.radius) && 
+                        cursor.speed < 10;
+      }
+
+      function stateFunc() {
+        if (!requireFullscreen){
+          FS = true;
+          PL = true;
+        }
+        
+        // Check firebase, fullscreen, and pointer lock (unless in a state where they can be off)
+        if (!isMember(state.current, [state.CONNECTION, state.FULLSCREEN, state.PAUSE])) {
+          if (!FB && useFirebase){ // firebase connection flag
+            cursor.disableMovement = true;
+            state.push(state.CONNECTION);
+          } else if (!FS || !PL) { // fullscreen and pointer lock flags
+            cursor.disableMovement = true;
+            state.push(state.FULLSCREEN); // pushing the state effectively 'saves' the current state
+          }
+        }
+
+
+        switch (state.current) {
+          case state.START:
+            if (video.ready && !cursor.disableMovement) {
+              feedbackText = '';
+              state.next(state.GO);
+            } else if (!cursor.disableMovement && state.expiredMSec(500) && !video.ready)  {
+              consoleLog('Video did not load')
+              state.next(state.GO);
+            } else if (ballClicked && blockNumber ==7) { 
+              consoleLog('Arrow has been selected')
+              state.next(state.MOVING);
+            } else if (feedbackText==='' && video.ready && !trial.demoTrial && state.expiredMSec(150)) {
+              //feedbackText = 'Click to start';
+              consoleLog('Ball not yet clicked')
+            }
+            break;
+
+          /*case state.DELAY:
+            if (!cursor.atHome){
+              state.next(state.START); // go back
+            }else if ((!trial.demoTrial && state.expiredMSec(250)) || state.expiredMSec(1200)) {
+              state.next(state.GO); // advance to next state
+            }
+            break;
+          */
+
+          case state.GO:
+            if (!cursor.atHome) {
+              feedbackText = '';
+              // Check the screen refresh rate
+              getScreenRefreshRate(function(FPS){ 
+                trial.screenRefreshRate = FPS;
+                consoleLog(`${FPS} FPS`);
+              });
+              state.next(state.MOVING); // advance to next state
+            } else if (!trial.demoTrial && state.expiredMSec(1000)) {
+              //feedbackText = 'Move to the button';
+              consoleLog('Ball has not yet moved forward')
+            }
+            break;
+
+          case state.MOVING:
+            if (cursor.cross[0]!==null) {
+              feedbackText = '';
+              if (cursor.hit) {
+                screenBackground.diffuseColors[0] = [1,1,1];
+                screenBorder.positions[0][1] = gameBackdrop.positions[0][1]-2;
+                video.play();
+                successSound.play();
+                points.earned++;
+                points.text = currencyFormatter.format(points.earned / 100);
+              } else if (blockNumber == 5) {
+                   Q1.pause();
+                   Q1.currentTime = 0;
+                   instructionText = '';
+                   questionAnsweredText = 'You Answered the Question!';
+              } else if (blockNumber == 6) {
+                   Q2.pause();
+                   Q2.currentTime = 0;
+                   instructionText = '';
+                   questionAnsweredText = 'You Answered the Question!';
+              } else if (blockNumber == 7 && cursor.cross[0]== -10) {
+                   Q3.pause();
+                   Q3.currentTime = 0;
+                   instructionText = '';
+                   questionAnsweredText = 'Left Arrow Selected!';
+              } else if (blockNumber == 7 && cursor.cross[0]== 10) {
+                   Q3.pause();
+                   Q3.currentTime = 0;
+                   instructionText = '';
+                   questionAnsweredText = 'Right Arrow Selected!';
+              } else {
+                if(blockNumber == 1 || blockNumber == 2 || blockNumber == 3){
+                   feedbackText = 'You slipped!';
+                   cursor.orientations[0][0] = -Math.PI/2;
+                   cursor.positions[0][2] = 0;
+                   cursor.positions[0][1] = iceBar.positions[0][1] + iceBar.scaleXYZ[0][2];
+                } else{
+                   feedbackText = 'Miss!';
+                }
+                sadFace.positions[0][1] = gameBackdrop.positions[0][1]-25;
+                cursor.disableMovement = true; // this will change the ball to the inactive color (default = red)
+              }
+              state.next(state.RETURN); // advance to next state
+            } 
+            break;
+
+          case state.RETURN:
+            // wait 2.5 sec before resetting for the next trial
+            if (state.expiredMSec(2500) && (trial.returnMethod=='warp' || (trial.returnMethod=='move' && cursor.atHome))) {
+              feedbackText = '';
+              instructionText = '';
+              questionAnsweredText = '';
+              sadFace.positions[0][1] = gameBackdrop.positions[0][1]+4;
+              screenBorder.positions[0][1] = gameBackdrop.positions[0][1]+5;
+              if (trial.returnMethod=='warp'){
+                cursor.disableMovement = true;
+              }
+              state.next(state.FINISH); // advance to next state
+            }
+
+            break;
+
+          case state.FINISH:
+            if (trial.demoTrial && !state.expiredMSec(2500)) {
+              break;
+            }
+            // make sure all the data we need is in the trial object
+            trial.hit = cursor.hit;
+            trial.canvas = [canvas.width, canvas.height];
+            trial.cross = [...cursor.cross];
+            trial.home = [...home.position];
+            trial.targetPosition = [...target.position];
+            trial.targetScaleXYZ = [...target.scaleXYZ];
+            trial.cursorScaleXYZ = [...cursor.scaleXYZ];
+            trial.numReleased = numReleased;
+            trial.gameAttemptNum = gameAttemptNum;
+
+            // add data to crashFile
+            crashFile.subjID_crash = subjID;
+            crashFile.uid_crash = uid;
+            crashFile.device_crash = inputdevice;
+            crashFile.blockNumber_crash = blockNumber;
+            crashFile.trialNumber_crash = trialNumber;
+            crashFile.displayTrialNumber_crash = displayTrialNumber;
+            crashFile.startDate_crash = startDate;
+            crashFile.conttrial_crash = conttrial;
+            crashFile.conttraj_crash = conttraj;
+            crashFile.penguinGroupSequence_crash = penguinGroupSequence;
+            crashFile.videoOrder_crash = videoOrder;
+            crashFile.timeStamps_crash = timeStamps;
+            crashFile.gameAttemptNum_crash = gameAttemptNum;
+
+            // save the trial, timeStamps, and crashFile objects, set flag in succesful callback
+            if(useFirebase){
+                if(trial.postTaskQuestions){
+                   firebaseTrialSave(trial, function() {
+                   saveSuccessful_trial = true;
+                   });
+                   timeStamps.trialNumber = 'timestampsPostQuestions';
+                   firebaseTrialSave(timeStamps, function() {
+                   saveSuccessful_timeStamps = true;
+                   });
+                   firebaseCrashFileSave(crashFile, function() {
+                   saveSuccessful_crash = true;
+                   });
+                } else {
+                   firebaseTrialSave(trial, function() {
+                   saveSuccessful_trial = true;
+                   });
+                   firebaseTrialSave(timeStamps, function() {
+                   saveSuccessful_timeStamps = true;
+                   });
+                   firebaseCrashFileSave(crashFile, function() {
+                   saveSuccessful_crash = true;
+                   });
+                }
+            }
+            state.next(state.ADVANCE);
+            break;
+
+          case state.ADVANCE:
+            if ( (!saveSuccessful_trial && useFirebase) || (!saveSuccessful_timeStamps && useFirebase) || (!saveSuccessful_crash && useFirebase)) {
+              // don't do anything until firebase save returns successful
+              break;
+            }
+            trialNumber++;
+            displayTrialNumber++;
+            conttrial++;
+            contTrajTrial = 0;
+
+            if (trialNumber < numTrials[blockNumber]) {
+              initTrial(trialNumber,blockNumber);
+            } else {
+                // condition to start Block 2
+                if(blockNumber == 0){
+                    state.next(state.PAUSE);
+                    blockTransition = true;
+                    resetToStartState = true;
+
+                    // Do not call exitPointerLock for touchscreen
+                    if(inputdevice =="Touch"){
+                        PL = false;
+                    } else{
+                        document.exitPointerLock();
+                        consoleLog("pointer lock disabled")
+                    }
+                    
+                    consoleLog("Ending Block 1")
+                    trialNumber = 0;
+                    displayTrialNumber = 1; // rest the trial number that is displayed between blocks 1/2 and 4/5 but not 2, 3, 4.
+                    blockNumber = 1; 
+                    document.getElementById('trial-content').style.display = 'none';
+                    document.getElementById('block2_instructions-content').style.display = 'block';
+                    block2AudioInstructions.play();
+                    document.getElementById('block2_instructions-button').removeAttribute('disabled');
+                    consoleLog("Starting Block 2")
+                    gameBackdrop.positions[0][2] = 5.25;
+                } else if(blockNumber == 1) {
+                    consoleLog("Ending Block 2")
+                    trialNumber = 0;
+                    blockNumber = 2; 
+                    consoleLog("Starting Block 3")
+                    initTrial(trialNumber,blockNumber);
+                } else if(blockNumber == 2) {
+                    consoleLog("Ending Block 3")
+                    trialNumber = 0;
+                    blockNumber = 3; 
+                    consoleLog("Starting Block 4")
+                    initTrial(trialNumber,blockNumber);
+                } else if(blockNumber == 3) {
+                    //condition to start Block 5
+                    state.next(state.PAUSE);
+                    blockTransition = true;
+                    resetToStartState = true;
+
+                    // Do not call exitPointerLock for touchscreen
+                    if(inputdevice =="Touch"){
+                        PL = false;
+                    } else{
+                        document.exitPointerLock();
+                        consoleLog("pointer lock disabled")
+                    }
+
+                    consoleLog("Ending Block 4")
+                    trialNumber = 0;
+                    displayTrialNumber = 1; // rest the trial number that is displayed between blocks 1/2 and 4/5 but not 2, 3, 4.
+                    blockNumber = 4; 
+                    document.getElementById('trial-content').style.display = 'none';
+                    document.getElementById('block5_instructions-content').style.display = 'block';
+                    block5AudioInstructions.play();
+                    document.getElementById('block5_instructions-button').removeAttribute('disabled');
+                    consoleLog("Starting Block 5")
+                    initTrial(trialNumber,blockNumber);
+                    gameBackdrop.positions[0][2] = 2;
+                } else if(blockNumber == 4) {
+                    //condition to start Block 6 (Post Tast Question 1)
+                    state.next(state.PAUSE);
+                    blockTransition = true;
+                    resetToStartState = true;
+
+                    // Do not call exitPointerLock for touchscreen
+                    if(inputdevice =="Touch"){
+                        PL = false;
+                    } else{
+                        document.exitPointerLock();
+                        consoleLog("pointer lock disabled")
+                    }
+
+                    consoleLog("Ending Block 5")
+                    timeStamps.startTrialTimestamp = [];
+                    timeStamps.ballClickedTimestamp = [];
+                    timeStamps.endTrialTimestamp = [];
+                    conttrial = 0;
+                    trialNumber = 0;
+                    displayTrialNumber = 1; // rest the trial number that is displayed between blocks 1/2 and 4/5 but not 2, 3, 4.
+                    blockNumber = 5; 
+                    document.getElementById('trial-content').style.display = 'none';
+                    document.getElementById('postTaskQuestions-content').style.display = 'block';
+                    postTaskQuestionsAudioInstructions.play();
+                    document.getElementById('postTaskQuestions-button').removeAttribute('disabled');
+                    consoleLog("Starting Block 6")
+                    initTrial(trialNumber,blockNumber);
+                    gameBackdrop.positions[0][2] = 2;
+                } else if(blockNumber == 5) {
+                    consoleLog("Ending Block 6")
+                    trialNumber = 0;
+                    blockNumber = 6; 
+                    consoleLog("Starting Block 7")
+                    initTrial(trialNumber,blockNumber);
+                    gameBackdrop.positions[0][2] = 5.25;
+                } else if(blockNumber == 6) {
+                    // Disable Pointer Lock for Arrow Question
+                    if(inputdevice =="Touch"){
+                        PL = true;
+                    } else{
+                        document.exitPointerLock();
+                        consoleLog("pointer lock disabled")
+                    }
+                    
+                    consoleLog("Ending Block 7")
+                    trialNumber = 0;
+                    blockNumber = 7; 
+                    consoleLog("Starting Block 8")
+                    initTrial(trialNumber,blockNumber);
+                    gameBackdrop.positions[0][2] = 5.25;
+                    cursor.positions[0][2] = -5;
+                } else{
+                    state.next(state.PAUSE);
+                    experimentFinished = true;
+                    wjsExitFullscreen(document);
+
+                    // Do not call exitPointerLock for touchscreen
+                    if(inputdevice =="Touch"){
+                        PL = false;
+                    } else{
+                        document.exitPointerLock();
+                        consoleLog("pointer lock disabled")
+                    }
+
+                    document.getElementById('trial-content').style.display = 'none';
+                    document.getElementById('end-content').style.display = 'block';
+                    gameEndSound.play();
+                    consoleLog("Game Completed")
+                    if(useFirebase){
+                        firebaseCrashFileDelete();
+                        consoleLog("Crash File Deleted")
+                    } 
+                }
+            }
+            break;
+
+          case state.FULLSCREEN:
+            if (FS && PL) {
+              state.pop();
+              dtTimer.reset();
+            }
+            break;
+            
+          case state.CONNECTION:
+            if (FB) {
+              state.pop();
+              dtTimer.reset();
+            }
+            break;
+        }
+      }
+
+      function displayFunc() {
+        // nothing to draw in these states
+        if (state.current < state.START || state.current > state.ADVANCE) { return; }
+        
+        // Record time of current screen refresh
+        trial.screenRefreshTime.push(performance.now());
+
+        // Draw the shadow map
+        if (light.shadowsOn){
+          gl.bindFramebuffer(gl.FRAMEBUFFER, light.shadowMapFBO);
+          gl.viewport(0, 0, shadows.textureSize, shadows.textureSize);
+          gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+          drawObjectShadowMap(gl, shadowShaderProgram, cursor, light.viewProjection);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+         }
+
+        // Clear
+        canvasContext.clearRect(0, 0, canvas.width, canvas.height); // Clear 2d canvas
+        gl.viewport(0, 0, glCanvas.width, glCanvas.height);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT); // Clear WebGL canvas
+        
+        // draw instruction and feedback text
+        if (trial.demoTrial) {
+          setDemoTrialText();
+          drawText([(canvas.width / 2), (canvas.height / 5)], instructionText, 16, 'green');
+        } else {
+          drawText([(canvas.width / 2), (canvas.height / 10)], feedbackText, 30, 'red');
+        }
+
+        if (trial.postTaskQuestions){
+            setPostTaskQuestions();
+            drawText([(canvas.width / 2), canvas.height*.85], instructionText, 30, 'blue');
+            drawText([(canvas.width / 2), canvas.height*.6], questionAnsweredText, 30, 'green');
+            drawText([(canvas.width / 2), (canvas.height / 10)], feedbackText, 30, 'red');
+        }
+            
+        
+        // Draw trial number text
+        drawText([20, canvas.height*.8], 'Trial: ' + (displayTrialNumber), 14, 'black', 'left');
+
+        // Draw exit full screen text 
+        drawText([20, canvas.height*.95], 'Press ESC to quit', 12, 'black', 'left');
+
+        // Draw giphy text 
+        drawText([canvas.width*.98, canvas.height*.95], 'All clips from giphy.com', 12, 'black', 'right');
+
+        // Set home position color to signal atHome      
+        //home.diffuseColors[0] = cursor.atHome ? home.activeColor : home.inactiveColor;
+        
+        // Set cursor color to signal whether activated
+        cursor.diffuseColors[0] = cursor.disableMovement ? cursor.inactiveColor : cursor.activeColor;
+
+        // Update video texture
+        if (video.ready) { updateVideoTexture(gl, videoTexture, video, 1); }
+        
+        // Draw 3d objects
+        //drawObject(gl, shaderProgram, home);
+        drawObject(gl, shaderProgram, cursor);
+        drawObject(gl, shaderProgram, floor);
+        drawObject(gl, shaderProgram, screenBackground);
+        drawObject(gl, shaderProgram, screenBorder);
+        drawObject(gl, shaderProgram, gameBackdrop);
+        drawObject(gl, shaderProgram, gameEnvironmentBottom);
+        drawObject(gl, shaderProgram, sadFace);
+        drawObject(gl, shaderProgram, moveRightArrow);
+        drawObject(gl, shaderProgram, moveLeftArrow);
+        drawObject(gl, shaderProgram, moveUpArrow);
+
+        // Draw the penguin group for blocks 0,4,5
+        if (blockNumber == 0 || blockNumber == 4 || blockNumber == 5){
+            drawObject(gl, shaderProgram, penguinGroup);
+        }
+
+        // Draw the ice patch for blocks 1,2,3,6,7
+        if (blockNumber == 1 || blockNumber == 2 || blockNumber == 3 || blockNumber == 6 || blockNumber == 7){
+            drawObject(gl, shaderProgram, iceBar);
+        }
+
+        // Draw arrows for block 7
+        if (blockNumber == 7){
+            drawObject(gl, shaderProgram, leftArrow);
+            drawObject(gl, shaderProgram, rightArrow);
+        }
+      }
+
+      function setDemoTrialText() {
+        if (!state.expiredMSec(200) && state.current !== state.MOVING) {
+          instructionText = ''; // clear text at start of every state, to make change more obvious
+        } else {
+          if (state.current === state.START) {
+            instructionText = 'Click the mouse to start';
+          //} else if (state.current === state.DELAY) {
+          //  instructionText = 'Wait for the target to light up...'
+          } else if (state.current === state.GO) {
+            instructionText = 'Move the ball to the target!';
+          } else if (state.current === state.RETURN) {
+            if (cursor.hit) {
+              instructionText = 'Nice job!'
+            } else {
+              instructionText = 'You missed!'
+            }
+          } else if (state.current === state.FINISH) {
+            instructionText = 'Good work. That was one trial.\n'+
+              'There are '+numDemoTrials+' trials in total.\n'+
+              'Please try to finish without taking a break.';
+          }
+        }
+      }
+
+      // Text to display for the post task questions
+      function setPostTaskQuestions() {
+        if (blockNumber == 5) {
+          instructionText = 'Move the penguin where you would to play the cartoon.';
+        } else if (blockNumber == 6) {
+          instructionText = 'Move the penguin to the spot in the ice where you have \n'+ 'the best chance at playing the cartoon.';
+        } else if (blockNumber == 7) {
+          instructionText = 'Click on the arrow that would have \n'+ 'the best chance at playing the cartoon.'
+        } 
+      }
+
+      function addEventListeners() {
+        // ONLOAD
+        window.addEventListener('DOMContentLoaded', browserCheck);
+
+        // Enable Screen Orientation Listener 
+        if (bowser.parse(window.navigator.userAgent).browser.name === "Safari"){
+            window.addEventListener('orientationchange', function(event) {
+            consoleLog("enter screen orientation change listener")
+            readDeviceOrientation();
+            })
+        } else{
+            screen.orientation.addEventListener('change', function(event) { 
+            consoleLog("enter screen orientation change listener")
+            readDeviceOrientation();
+            })
+        }
+
+        //Check the device and orientation of the screen; require landscape to continue
+        if (bowser.parse(window.navigator.userAgent).platform.type == "mobile"){
+            requireFullscreen = false;
+            mobilePlatform = true;
+
+            document.getElementById('homepage-content').style.display = 'none';
+            document.getElementById('phoneDetected-content').style.display = 'block';
+            consoleLog("This game version is not supported on this device :(")
+
+        } else{
+            if (bowser.parse(window.navigator.userAgent).browser.name === "Safari"){
+                
+                // If using Safari, check whether window.orientation is defined (will be defined when using an iPad). 
+                // If defined, check for landscape orientation and prompt for rotation. Otherwise, proceed to homepage
+                if ( Math.abs(window.orientation) === 90 ){
+                    consoleLog("Screen is in landscape: " + window.orientation)
+                    document.getElementById('screenOrientation-content').style.display = 'none';
+                    document.getElementById('homepage-content').style.display = 'block';
+                } else if( window.orientation === 0 || window.orientation === 180) {
+                    consoleLog("Screen is in portrait: " + window.orientation)
+                    document.getElementById('homepage-content').style.display = 'none';
+                    document.getElementById('screenOrientation-content').style.display = 'block';
+                    correctOrientation = false;
+                } else{
+                    document.getElementById('homepage-content').style.display = 'block';
+                } 
+            } else{
+                if ( window.screen.orientation.type === "landscape-primary" || window.screen.orientation.type === "landscape-secondary"){
+                    consoleLog("Screen is in landscape: " + window.screen.orientation.type)
+                    document.getElementById('screenOrientation-content').style.display = 'none';
+                    document.getElementById('homepage-content').style.display = 'block';
+                } else if (window.screen.orientation.type === "portrait-primary" || window.screen.orientation.type === "portrait-secondary"){
+                    consoleLog("Screen is in portrait: " + window.screen.orientation.type)
+                    document.getElementById('homepage-content').style.display = 'none';
+                    document.getElementById('screenOrientation-content').style.display = 'block';
+                    correctOrientation = false;
+                } else if (window.screen.orientation.type === undefined){
+                    consoleLog("The orientation API isn't supported in this browser :(")
+                }
+            }
+        }
+
+        // If connected to Firebase, enable crash file loading 
+        if(useFirebase){
+            document.getElementById('crash-button').removeAttribute('disabled')
+        }
+
+        // HOME PAGE => FULLSCREEN
+        document.getElementById('homepage-fullscreen-button').addEventListener('click', function(event) {
+          event.preventDefault(); // prevent the default form submission
+          if(requireFullscreen){
+             wjsRequestFullscreen(document.body); // custom function that supports Safari
+          }
+          document.getElementById('homepage-content').style.display = 'none';
+          document.getElementById('survey-content').style.display = 'block';
+          gameStartSound.play();
+          if(useFirebase){
+          firebaseSignIn(function() {
+            document.getElementById('survey-button').removeAttribute('disabled')
+          }); 
+          } else {
+            document.getElementById('survey-button').removeAttribute('disabled')
+          }
+        });
+
+        // Program Crashed Button
+        document.getElementById('crash-button').addEventListener('click', function(event) {
+          document.getElementById('homepage-content').style.display = 'none';
+          gameStartSound.play();
+          if(requireFullscreen){
+             wjsRequestFullscreen(document.body); // custom function that supports Safari
+          }
+          document.getElementById('crash-content').style.display = 'block';
+        });
+
+        // Load Crashed Data 
+        document.getElementById('loadCrash-button').addEventListener('click', function(event) {
+          subjID = document.getElementById('crashedSubjID').value;
+          document.getElementById('crash-content').style.display = 'none';
+          consoleLog("SubjID to Load: " + subjID)
+
+          // Load participant data from crashed file
+          firebaseCrashFileLoad();
+
+          setTimeout(function() {
+              if(subjCrashedData != null){
+                    crashDataLoaded = true;
+
+                    // Sign into firebase and assign variables from load crash data
+                    firebaseSignIn(function() {
+                         subjID = subjCrashedData.subjID_crash;
+                         inputdevice = subjCrashedData.device_crash;
+                         startDate = subjCrashedData.startDate_crash;
+                         blockNumber = subjCrashedData.blockNumber_crash;
+                         trialNumber = subjCrashedData.trialNumber_crash +1;
+                         displayTrialNumber = subjCrashedData.displayTrialNumber_crash +1;
+                         conttrial = subjCrashedData.conttrial_crash +1;
+                         conttraj = subjCrashedData.conttraj_crash;
+                         timeStamps = subjCrashedData.timeStamps_crash;
+                         penguinGroupSequence = subjCrashedData.penguinGroupSequence_crash;
+                         videoOrder = subjCrashedData.videoOrder_crash;
+                         gameAttemptNum = subjCrashedData.gameAttemptNum_crash +1;
+
+                         // Check to see if game crashed between blocks 
+                         if (trialNumber + 1 > numTrials[blockNumber]){
+                            if (blockNumber == 0){
+                                blockTransition = true;
+                                resetToStartState = true;
+                                trialNumber = 0;
+                                displayTrialNumber = 1; // rest the trial number that is displayed between blocks 1/2 and 4/5 but not 2, 3, 4.
+                                blockNumber = 1; 
+                            } else if (blockNumber == 1) {
+                                trialNumber = 0;
+                                blockNumber = 2; 
+                            } else if (blockNumber == 2) {
+                                trialNumber = 0;
+                                blockNumber = 3; 
+                            } else if (blockNumber == 3) {
+                                blockTransition = true;
+                                resetToStartState = true;
+                                trialNumber = 0;
+                                displayTrialNumber = 1; // rest the trial number that is displayed between blocks 1/2 and 4/5 but not 2, 3, 4.
+                                blockNumber = 4; 
+                            } else if (blockNumber == 4) {
+                                blockTransition = true;
+                                resetToStartState = true;
+                                timeStamps.startTrialTimestamp = [];
+                                timeStamps.ballClickedTimestamp = [];
+                                timeStamps.endTrialTimestamp = [];
+                                conttrial = 0;trialNumber = 0;
+                                displayTrialNumber = 1; // rest the trial number that is displayed between blocks 1/2 and 4/5 but not 2, 3, 4.
+                                blockNumber = 5; 
+                            } else if (blockNumber == 5) {
+                                trialNumber = 0;
+                                blockNumber = 6; 
+                            } else if (blockNumber == 6) {
+                                trialNumber = 0;
+                                blockNumber = 7; 
+                            } 
+                         }
+
+                         // Check if the uid from the crash file matches the current uid
+                         if (uid == subjCrashedData.uid_crash){
+                            // If the current uid matches, clear the incomplete trial/set the Trajectories node at the conttrial level to []
+                            firebaseClearIncompleteTrajectory(function() {
+                                saveSuccessful = true;
+                            });
+                         } 
+
+                         // Save the crashed and new UIDs to firebase
+                         var crashFileLoaded = {
+                             status: true,
+                             crashedSubjID: subjCrashedData.subjID_crash,
+                             crashedUID: subjCrashedData.uid_crash,
+                             currentUID: uid,
+                             currentBrowser: browserInfo.browser,
+                             currentOs: browserInfo.os,
+                             trialNumber: 'crash'
+                         };
+                         firebaseTrialSave(crashFileLoaded, function() {
+                            saveSuccessful = true;
+                            consoleLog("Crash UID saved to firebase")
+                         });
+                         document.getElementById('crashDataLoaded-content').style.display = 'block';
+                    }); 
+              } else{
+                    // If there is no crash file associated with the entered subjID, prompt to re-start the game.
+                    document.getElementById('crashDataNotLoaded-content').style.display = 'block';
+              }
+          }, 1000);
+        });
+
+        // Crash Data Loaded
+        document.getElementById('crashDataLoaded-button').addEventListener('click', function(event) {
+          
+          document.getElementById('crashDataLoaded-content').style.display = 'none';
+
+          // Determine which block instructions to display 
+          if(blockNumber == 0){
+            document.getElementById('block1_instructions-content').style.display = 'block';
+            block1AudioInstructions.play();
+            document.getElementById('block1_instructions-button').removeAttribute('disabled');
+          } else if(blockNumber == 4){
+            document.getElementById('block5_instructions-content').style.display = 'block';
+            block5AudioInstructions.play();
+            document.getElementById('block5_instructions-button').removeAttribute('disabled');
+          } else if(blockNumber == 5){
+            document.getElementById('postTaskQuestions-content').style.display = 'block';
+            postTaskQuestionsAudioInstructions.play();
+            document.getElementById('postTaskQuestions-button').removeAttribute('disabled');
+          } else if(blockNumber == 6){
+            document.getElementById('postTaskQuestions-content').style.display = 'block';
+            postTaskQuestionsAudioInstructions.play();
+            document.getElementById('postTaskQuestions-button').removeAttribute('disabled');
+            resetToStartState = true;
+            gameBackdrop.positions[0][2] = 5.25; // Position the penguin background correctly for block 6
+          } else if(blockNumber == 7){
+            document.getElementById('postTaskQuestions-content').style.display = 'block';
+            postTaskQuestionsAudioInstructions.play();
+            document.getElementById('postTaskQuestions-button').removeAttribute('disabled');
+            gameBackdrop.positions[0][2] = 5.25; // Position the penguin background correctly for block 7
+          } else{
+            document.getElementById('block2_instructions-content').style.display = 'block';
+            block2AudioInstructions.play();
+            document.getElementById('block2_instructions-button').removeAttribute('disabled');
+            resetToStartState = true;
+            gameBackdrop.positions[0][2] = 5.25; // Position the penguin background correctly for block 1,2,3
+          }
+        });
+        
+        // Crash Data Not Loaded
+        document.getElementById('crashDataNotLoaded-button').addEventListener('click', function(event) {
+            document.getElementById('crashDataNotLoaded-content').style.display = 'none';
+            document.getElementById('homepage-content').style.display = 'block';
+        });
+        
+        // SURVEY - Participant Data
+        document.getElementById('survey-form').addEventListener('submit', function(event) {
+          event.preventDefault();
+          var data = new FormData(event.target);
+          var surveydata = Object.fromEntries(data.entries());
+          surveydata.date = getFormattedDateObject();
+          surveydata.browser = browserInfo.browser;
+          surveydata.os = browserInfo.os;
+          surveydata.trialNumber = 'info';
+          surveydata.stateNames = stateNames;
+          surveydata.videoOrder = videoOrder;
+          surveydata.currentSpeedScalar = cursor.speedScalar;
+          subjID = surveydata.subjID;
+          inputdevice = surveydata.inputdevice;
+          document.getElementById('survey-button').setAttribute('disabled','');
+
+          // Save the start date when the survey page is started 
+          var currentTime = new Date();
+          startDate = currentTime.getFullYear() + '_' + (currentTime.getMonth()+1) + '_' + currentTime.getDate() + '_' + currentTime.getHours() + '-' + currentTime.getMinutes() + '-' + currentTime.getSeconds();
+           
+          if(useFirebase){
+          firebaseTrialSave(surveydata, function() {
+            surveydata.uid = [];
+            document.getElementById('survey-content').style.display = 'none';
+            document.getElementById('block1_instructions-content').style.display = 'block';
+            block1AudioInstructions.play();
+            setTimeout(function() {
+              document.getElementById('block1_instructions-button').removeAttribute('disabled');
+            }, 0);
+          });
+          } else {
+            document.getElementById('survey-content').style.display = 'none';
+            document.getElementById('block1_instructions-content').style.display = 'block';
+            block1AudioInstructions.play();
+            document.getElementById('block1_instructions-button').removeAttribute('disabled');
+          }
+        });
+
+        // INSTRUCTIONS - Block 1
+        document.getElementById('block1_instructions-button').addEventListener('click', function(event) {
+          initTrial(trialNumber,blockNumber); // this should be the first call to initTrial
+          document.getElementById('block1_instructions-content').style.display = 'none';
+
+          // Stop the audio instructions when the button is pressed
+          block1AudioInstructions.pause();
+          block1AudioInstructions.currentTime = 0;
+          if(FS){
+            document.getElementById('pointerlock-content').style.display = 'block';
+          } else {
+            document.getElementById('fullscreen-content').style.display = 'block';
+          }
+          
+        });
+
+        // INSTRUCTIONS - Block 2&3&4
+        document.getElementById('block2_instructions-button').addEventListener('click', function(event) {
+          initTrial(trialNumber,blockNumber);
+          document.getElementById('block2_instructions-content').style.display = 'none';
+
+          // Stop the audio instructions when the button is pressed
+          block2AudioInstructions.pause();
+          block2AudioInstructions.currentTime = 0;
+          if(FS){
+             state.next(state.FULLSCREEN);
+             if(inputdevice=="Touch"){
+                PL = true;
+                document.getElementById('trial-content').style.display = 'block';
+                // For touch, before the first trial after the block transition, need to set state to START to re-start trial logic
+                state.next(state.START);
+                resetToStartState = false;
+             } else{
+                // if game remains in fullscreen during instructions, pointer lock is automatically re-initiated here
+                document.body.requestPointerLock();
+                consoleLog('Block Transition: pointer lock requested')
+             }
+             blockTransition = false;
+          } else {
+            document.getElementById('fullscreen-content').style.display = 'block';
+            blockTransition = false;
+          }
+        });
+
+        // INSTRUCTIONS - Block 5
+        document.getElementById('block5_instructions-button').addEventListener('click', function(event) {
+          initTrial(trialNumber,blockNumber);
+          document.getElementById('block5_instructions-content').style.display = 'none';
+
+          // Stop the audio instructions when the button is pressed
+          block5AudioInstructions.pause();
+          block5AudioInstructions.currentTime = 0;
+          if(FS){
+             state.next(state.FULLSCREEN);
+             if(inputdevice=="Touch"){
+                PL = true;
+                document.getElementById('trial-content').style.display = 'block';
+                // For touch, before the first trial after the block transition, need to set state to START to re-start trial logic
+                state.next(state.START);
+                resetToStartState = false;
+             } else{
+                // if game remains in fullscreen during instructions, pointer lock is automatically re-initiated here
+                document.body.requestPointerLock();
+                consoleLog('Block Transition: pointer lock requested')
+             }
+             blockTransition = false;
+          } else {
+            document.getElementById('fullscreen-content').style.display = 'block';
+            blockTransition = false;
+          }
+        });
+
+        // INSTRUCTIONS - Post Game Questions
+        document.getElementById('postTaskQuestions-button').addEventListener('click', function(event) {
+          initTrial(trialNumber,blockNumber);
+          document.getElementById('postTaskQuestions-content').style.display = 'none';
+
+          // Stop the audio instructions when the button is pressed
+          postTaskQuestionsAudioInstructions.pause();
+          postTaskQuestionsAudioInstructions.currentTime = 0;
+                   
+          if(FS){
+             state.next(state.FULLSCREEN);
+             if(inputdevice=="Touch"){
+                PL = true;
+                document.getElementById('trial-content').style.display = 'block';
+                if (blockNumber == 5){
+                   Q1.play();
+                } else if (blockNumber == 6){
+                   Q2.play(); // Play instructions when game reloaded from crash file
+                } else if (blockNumber == 7){
+                   Q3.play(); // Play instructions when game reloaded from crash file
+                } 
+                // For touch, before the first trial after the block transition, need to set state to START to re-start trial logic
+                state.next(state.START);
+                resetToStartState = false;
+             } else{
+                if (blockNumber == 7){
+                   consoleLog('pointer lock not requested for post task question 3');
+                   document.getElementById('trial-content').style.display = 'block';
+                   PL = true;
+                   // For re-loading at question 3, before the first trial after the block transition, need to set state to START to re-start trial logic
+                   state.next(state.START);
+                   resetToStartState = false;
+                } else{
+                   // if game remains in fullscreen during instructions, pointer lock is automatically re-initiated here
+                   document.body.requestPointerLock();
+                   consoleLog('Block Transition: pointer lock requested')
+                   if (blockNumber == 5){
+                     Q1.play();
+                   } else if (blockNumber == 6){
+                     Q2.play();
+                   } 
+                }
+             }
+             blockTransition = false;
+          } else {
+            document.getElementById('fullscreen-content').style.display = 'block';
+            blockTransition = false;
+          }
+        });
+
+        // FULLSCREEN button on game quit page
+        document.getElementById('fullscreen-button').addEventListener('click', function(event) {
+          //document.body.requestFullscreen();
+          wjsRequestFullscreen(document.body); // custom function that supports Safari
+        });
+        
+        // POINTER LOCK
+          document.getElementById('pointerlock-button').addEventListener('click', function(event) {
+            consoleLog("Request PL: canvasHeight = " + canvas.height + " canvasWidth = " + canvas.width + " | glCanvasHeight = " + glCanvas.height + " glCanvasWidth = " + glCanvas.width)
+            updateCanvas();
+            consoleLog("After Update Canvas is called: canvasHeight = " + canvas.height + " canvasWidth = " + canvas.width + " | glCanvasHeight = " + glCanvas.height + " glCanvasWidth = " + glCanvas.width)
+            consoleLog('Device = ' + inputdevice)
+            if(inputdevice=="Touch"){
+                document.getElementById('pointerlock-content').style.display = 'none';
+                document.getElementById('trial-content').style.display = 'block';
+                PL = true;
+
+                // For touch condition, in the first trial after block transition, need to set state to START to re-start trial logic
+                if(resetToStartState){
+                  state.next(state.START);
+                  resetToStartState = false;
+                }
+            } else if (trial.postTaskQuestions && blockNumber == 7){
+                consoleLog('pointer lock not requested for post task question 3');
+                document.getElementById('pointerlock-content').style.display = 'none';
+                document.getElementById('trial-content').style.display = 'block';
+                PL = true;
+                return;
+            } else{
+                document.body.requestPointerLock();
+                consoleLog('pointer lock requested')
+            }
+
+        });
+
+        // QUIT GAME
+          document.getElementById('quit-button').addEventListener('click', function(event) {
+             document.getElementById('fullscreen-content').style.display = 'none';
+             document.getElementById('endEarly-content').style.display = 'block';
+        });
+        
+        // FULLSCREEN
+        ['fullscreenchange', 'webkitfullscreenchange'].forEach(function(eventName){
+          document.addEventListener(eventName, (event) => {
+            var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+            if (fullscreenElement && preGameStart) {
+              preGameStart = false; // Update to false after the game home page. 
+              consoleLog(`Entering full-screen mode on ${fullscreenElement}.`);
+              updateCanvas();
+              FS = true;
+            } else if (fullscreenElement && !preGameStart) {
+              consoleLog(`Entering full-screen mode on ${fullscreenElement}.`);
+              document.getElementById('fullscreen-content').style.display = 'none';
+              document.getElementById('pointerlock-content').style.display = 'block';
+              updateCanvas();
+              FS = true;
+            } else {
+              consoleLog('Exiting full-screen mode.');
+              if(state.current!==state.PAUSE && requireFullscreen){
+                document.getElementById('trial-content').style.display = 'none';
+                document.getElementById('pointerlock-content').style.display = 'none';
+                document.getElementById('fullscreen-content').style.display = 'block';
+                trial.missTrial = true;
+                trial.missTrialMsg = 'fullscreenExited';
+              }
+              FS = false;
+
+              if(inputdevice=="Touch"){
+                // Neccessary to reset pointerlock status here for game logic on touchscreen devices
+                PL = false;
+              }
+
+              if(inputdevice != "Touch" && blockNumber == 7){
+                // Neccessary to reset pointerlock status here for game logic on in post game question on mouse/trackpad
+                PL = false;
+              }
+            }
+          });
+        });
+
+        // POINTER LOCK CHANGE
+        document.addEventListener('pointerlockchange', (event) => {
+           if ( blockTransition && !experimentFinished){
+                 // Do not lock the pointer if during block transistion
+                  return;
+           }
+
+          if (document.pointerLockElement){
+            consoleLog(`Entering pointer lock on ${document.pointerLockElement.id}.`);
+            document.getElementById('pointerlock-content').style.display = 'none';
+            document.getElementById('trial-content').style.display = 'block';
+            PL = true;
+
+            // For mouse/trackpad, in the first trial after block transition, need to set state to START to re-start trial logic
+            if(resetToStartState){
+                state.next(state.START);
+                resetToStartState = false;  
+            }
+
+            // Play post game Q1 instructions audio after block transistion
+            if (trial.postTaskQuestions && blockNumber == 5){
+                Q1.play();
+            } else if (trial.postTaskQuestions && blockNumber == 6){
+                Q2.play();
+            }
+
+          } else {
+            consoleLog('Exiting pointer lock.');
+
+            if (trial.postTaskQuestions && blockNumber == 7){
+                consoleLog('Pointer lock exited for post task question 3');
+                PL = true;
+                return;
+            }
+
+            // If game is exited in the middle of a trial, reset ball to home position as if right mouse clicked; iterate numReleased 
+            // For Safari, full screen is exited before pointer lock is disabled therefore state.FULLSCREEN must be included here
+            if (isMember(state.current, [state.START, state.GO, state.MOVING, state.FULLSCREEN]) && ballClicked){ 
+                cursor.position = [...home.position];
+                cursor.actualPosition = [...home.position];
+                cursor.delta = [0, 0];
+                cursor.cumDelta = [0, 0];
+                cursor.angle = 0;
+                cursor.displayAngle = 0;
+                calculatedInitialAngle = false;
+                ballClicked = false;
+                XoutOfBounds = false;
+                YoutOfBounds = false;
+                setDisplayedCursorPosition();
+                numReleased++;
+                cursor.disableMovement = true;
+                state.next(state.START);
+
+                consoleLog("Ball reset")
+            }
+
+            var fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+            if (fullscreenElement) { 
+              wjsExitFullscreen(document);
+            }else if (state.current!==state.PAUSE && requireFullscreen){
+              document.getElementById('trial-content').style.display = 'none';
+              document.getElementById('pointerlock-content').style.display = 'none';
+              document.getElementById('fullscreen-content').style.display = 'block';
+              trial.missTrial = true;
+              trial.missTrialMsg = 'pointerlockDisabled';
+            }
+            PL = false;
+          }
+        }, false);
+        
+        document.addEventListener('pointerlockerror', (event) => {
+          alert('Error: Pointer lock request failed!');
+        }, false);
+
+        // MOUSE and Trackpad
+        document.body.addEventListener('mousemove', handleMouseMove);
+        document.body.addEventListener('click', handleClick);
+        document.body.addEventListener('pointermove', handlePointerMove);
+
+        // TOUCHSCREEN
+        document.body.addEventListener('touchstart', handleTouchClick);
+        document.body.addEventListener('touchmove', handleTouchMove);
+        document.body.addEventListener('touchend', handleTouchRelease);
+
+        // RESIZE
+        window.addEventListener('resize', handleResize);
+        
+        // PAGE CLOSE ALERT
+        window.addEventListener('beforeunload', function(){
+          if(!experimentFinished){
+            return event.returnValue = 'Are you sure you want to quit?';
+          }
+        });
+        
+        // FIREBASE DISCONNECT
+        if(useFirebase){
+          firebase.database().ref().child('.info/connected').on('value', function(connectedSnap) {
+          if (connectedSnap.val() === true) {
+            document.getElementById('page-content').style.display = 'block';
+            document.getElementById('connection-content').style.display = 'none';
+            FB = true;
+          } else {
+            document.getElementById('page-content').style.display = 'none';
+            document.getElementById('connection-content').style.display = 'block';
+            FB = false;
+          }
+        });
+        }
+
+      }
+
+      function handleStateChange() {
+        trial.stateChange.push(state.current);
+        trial.stateChangeTime.push(performance.now());
+      }
+
+      function handleMouseMove(event) {
+        if (!document.pointerLockElement && requireFullscreen) {
+          return;
+        }
+
+        // Receive Mouse input; set cursor.delta 
+        cursor.delta[0] = event.movementX;
+        cursor.delta[1] = -event.movementY; // must invert the y position
+
+        //consoleLog("event.movementX = " + event.movementX)
+        //consoleLog("event.movementY = " + event.movementY)
+        //consoleLog("cursor delta = " + cursor.delta)
+
+        //consoleLog('Is cursor disabled(mouse)? ' + cursor.disableMovement)
+        // move the cursor
+        if (isMember(state.current, [state.START, state.GO, state.MOVING, state.RETURN]) && !cursor.disableMovement ) {
+            
+            //consoleLog("cursor delta = " + cursor.delta)
+
+            // Variable for unclamped cursor position 
+            cursor.actualPosition[0] += cursor.delta[0] * cursor.speedScalar;
+            cursor.actualPosition[1] += cursor.delta[1] * cursor.speedScalar;
+
+            //consoleLog("cursor.actualPosition (handleMouseMove) = " + cursor.actualPosition)
+
+            // Variable for cursor position clamped to the game boundary; only adds delta if inside the bounds
+            if (!XoutOfBounds){
+                cursor.position[0] += cursor.delta[0] * cursor.speedScalar;
+            }
+            if (!YoutOfBounds){
+                cursor.position[1] += cursor.delta[1] * cursor.speedScalar;
+            }
+
+            //consoleLog("cursor.position (handleMouseMove) = " + cursor.position)
+
+            // Cumulative Delta Values
+            cursor.cumDelta[0] += cursor.delta[0];
+            cursor.cumDelta[1] += cursor.delta[1];
+
+            //consoleLog("cursor delta: " + cursor.delta + " | cursor cumDelta: " + cursor.cumDelta + " | Clamped_CursorPosition: " + cursor.position + " | Actual_CursorPosition: " + cursor.actualPosition)
+        }
+        
+        // calculate the angle of the cursor from the home position 
+        calculateAngle();
+        //consoleLog("cursor.angle (handleMouseMove) = " + cursor.angle)
+
+        // handles transformation from cursor.position to cursor.display and cursor.positions[0]
+        // currently includes clamping to boundaries and visuomotor rotation
+        setDisplayedCursorPosition();
+
+        if (trial && ballClicked && state.current >= state.START && state.current < state.RETURN) {
+          
+          // Holds the cummulative array of the trajectory data to the trial variable and saves at end of trial (backup for what is saves in Trajectories in case a frame is missed 
+          //trial.allTrajectories.push([event.timeStamp, blockNumber, trialNumber, cursor.delta[0], cursor.delta[1], cursor.cumDelta[0], cursor.cumDelta[1], cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current]);
+          
+          // Holds a single frame of data and saves to Firebase immediately
+          trajMatrix.data = [event.timeStamp, blockNumber, trialNumber, cursor.delta[0], cursor.delta[1], cursor.cumDelta[0], cursor.cumDelta[1], cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current];
+          trajMatrix.conttraj = conttraj;
+          trajMatrix.contTrajTrial = contTrajTrial;
+          
+          if(trial.postTaskQuestions){
+             trajMatrix.trialNumber = 'trajMatrixPostQuestions';
+          }
+
+          // save the trial object, set flag in successful callback
+          if(useFirebase){
+            firebaseTrialSave(trajMatrix, function() {
+             saveSuccessful = true;
+             trajMatrix.data = [];
+            });
+          }
+          conttraj++;
+          contTrajTrial++;
+        }
+      }
+      
+      function handlePointerMove(event) {
+        if ( !(browserName.includes('Chrome') || browserName.includes('Edge')) ||
+              (!document.pointerLockElement && requireFullscreen) ) {
+          return;
+        }
+        
+        // Records the coalesced points for games played in Chrome or Edge
+        if (trial && ballClicked && state.current >= state.START && state.current < state.RETURN) {
+          var eSeq = event.getCoalescedEvents();
+          for (let e of eSeq){
+            trial.dxCo.push(e.movementX);
+            trial.dyCo.push(-e.movementY);
+            trial.tCo.push(e.timeStamp);
+            trial.stateCo.push(state.current);
+            trial.conttrajArray.push(conttraj);
+          }
+        }
+      }
+      
+
+      function handleTouchMove(event) {
+        if (!requireFullscreen || inputdevice != "Touch") {
+          return;
+        }
+        
+        // TOUCHSCREEN cursor controlled via raycasting
+
+        var xy = getMousePos(glCanvas,event);
+        var ray = raycastCanvas(xy[0],xy[1]);
+        var intersect = rayPlaneIntersect(ray, {normal: [0,0,1], point: floor.positions[0]});
+        var offset = vec3.scale(vec3.create(),vec3.clone([0,0,1]),cursor.radius);
+        var newPosn = vec3.add(vec3.create(),intersect,offset);
+
+        // cursor position clamped to bounds of the game zone
+        var newPosn_clamped = vec3.add(vec3.create(),intersect,offset);
+        newPosn_clamped[0] = Math.max(cursor.xmin,newPosn_clamped[0]);
+        newPosn_clamped[0] = Math.min(cursor.xmax,newPosn_clamped[0]);
+        newPosn_clamped[1] = Math.max(cursor.ymin,newPosn_clamped[1]);
+        newPosn_clamped[1] = Math.min(cursor.ymax,newPosn_clamped[1]);
+
+        consoleLog('Is cursor disabled(touch)? ' + cursor.disableMovement)
+        // move the cursor
+        if (isMember(state.current, [state.START, state.GO, state.MOVING, state.RETURN]) && !cursor.disableMovement) {
+            cursor.position = newPosn_clamped;
+            cursor.actualPosition = newPosn;
+
+            //consoleLog("Touch pixels: " + [event.touches[0].clientX, event.touches[0].clientY] + " | Clamped_TouchPosition: " + cursor.position + " | Actual_TouchPosition: " + cursor.actualPosition)
+            consoleLog("cursor.actualPosition (handleTouchMove) = " + cursor.actualPosition)
+            consoleLog("cursor.position (handleTouchMove) = " + cursor.position)
+        }
+
+        // calculate the angle of the cursor from the home position 
+        calculateAngle();
+        consoleLog("cursor.angle (handleTouchMove) = " + cursor.angle)
+
+        // handles transformation from cursor.position to cursor.display and cursor.positions[0]
+        // currently includes clamping to boundaries and visuomotor rotation
+        setDisplayedCursorPosition_Touch();
+
+        if (trial && ballClicked && state.current >= state.START && state.current < state.RETURN) {
+
+          // Holds the cummulative array of the trajectory data to the trial variable and saves at end of trial (backup for what is saves in Trajectories in case a frame is missed 
+          //trial.allTrajectories.push([event.timeStamp, blockNumber, trialNumber, event.touches[0].clientX, event.touches[0].clientY, null, null, cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current]);
+          
+          // Holds a single frame of data and saves to Firebase immediately
+          trajMatrix.data = [event.timeStamp, blockNumber, trialNumber, event.touches[0].clientX, event.touches[0].clientY, null, null, cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current];
+          trajMatrix.conttraj = conttraj;
+          trajMatrix.contTrajTrial = contTrajTrial;
+
+          if(trial.postTaskQuestions){
+              trajMatrix.trialNumber = 'trajMatrixPostQuestions';
+          }
+
+          // save the trial object, set flag in succesful callback
+          if(useFirebase){
+            firebaseTrialSave(trajMatrix, function() {
+             saveSuccessful = true;
+             trajMatrix.data = [];
+            });
+          }
+          conttraj++;
+          contTrajTrial++;
+
+        }
+      }
+
+      // This function is for mouse click inputs 
+      function handleClick(event){
+        consoleLog("Click Event: " + event.which + " | PointerType: " + event.pointerType)
+        
+        if(inputdevice != "Touch" && event.pointerType != "touch"){
+            
+            // Added 7/15/2022
+            if (blockNumber == 7 && state.current >= state.START && state.current < state.RETURN){
+            
+                var selectedLeftArrow = true;
+                var selectedRightArrow = true;
+                let xy = getClickPos(glCanvas,event);
+                consoleLog("Mouse Screen Position = " + xy)
+                let ray = raycastCanvas(xy[0],xy[1]);
+                let intersect = rayPlaneIntersect(ray, {normal: [0,0,1], point: floor.positions[0]});
+                consoleLog("Intersect = " + intersect)
+                //clickedOnBall = isHome([intersect[0],intersect[1]],home.position,cursor.radius);
+                selectedLeftArrow = isHome([intersect[0],intersect[1]],[leftArrow.positions[0][0]-4,leftArrow.positions[0][1]],8);
+                selectedRightArrow = isHome([intersect[0],intersect[1]],[rightArrow.positions[0][0]+4,rightArrow.positions[0][1]],8);
+
+                if (selectedLeftArrow){
+                    cursor.cross[0] = -10;
+                    trial.interpolatedEnd = [intersect[0],intersect[1]];
+                    consoleLog('Left Arrow Selected')
+                    document.body.requestPointerLock();
+
+                    trial.ballClickedTime = performance.now();
+                    timeStamps.ballClickedTimestamp[conttrial] = getFormattedDateObject().string;
+                    ballClicked = true;
+
+                    // Write ball clicked data to TrajMatrix
+                    //trial.allTrajectories.push([event.timeStamp, blockNumber, trialNumber, cursor.delta[0], cursor.delta[1], cursor.cumDelta[0], cursor.cumDelta[1], cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current]);
+                    trajMatrix.data = [event.timeStamp, blockNumber, trialNumber, cursor.delta[0], cursor.delta[1], cursor.cumDelta[0], cursor.cumDelta[1], cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current];
+                    trajMatrix.conttraj = conttraj;
+                    trajMatrix.contTrajTrial = contTrajTrial;
+                    trajMatrix.trialNumber = 'trajMatrixPostQuestions';
+
+                    // save the trial object, set flag in succesful callback
+                    if(useFirebase){
+                        firebaseTrialSave(trajMatrix, function() {
+                        saveSuccessful = true;
+                        trajMatrix.data = [];
+                        });
+                    }
+                    conttraj++;
+                    contTrajTrial++;
+                    consoleLog(event.timeStamp + "(ms): click data saved ")
+
+                } else if (selectedRightArrow){
+                    cursor.cross[0] = 10;
+                    trial.interpolatedEnd = [intersect[0],intersect[1]];
+                    consoleLog('Right Arrow Selected')
+                    document.body.requestPointerLock();
+
+                    trial.ballClickedTime = performance.now();
+                    timeStamps.ballClickedTimestamp[conttrial] = getFormattedDateObject().string;
+                    ballClicked = true;
+
+                    // Write ball clicked data to TrajMatrix
+                    //trial.allTrajectories.push([event.timeStamp, blockNumber, trialNumber, cursor.delta[0], cursor.delta[1], cursor.cumDelta[0], cursor.cumDelta[1], cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current]);
+                    trajMatrix.data = [event.timeStamp, blockNumber, trialNumber, cursor.delta[0], cursor.delta[1], cursor.cumDelta[0], cursor.cumDelta[1], cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current];
+                    trajMatrix.conttraj = conttraj;
+                    trajMatrix.contTrajTrial = contTrajTrial;
+                    trajMatrix.trialNumber = 'trajMatrixPostQuestions';
+
+                    // save the trial object, set flag in succesful callback
+                    if(useFirebase){
+                        firebaseTrialSave(trajMatrix, function() {
+                        saveSuccessful = true;
+                        trajMatrix.data = [];
+                        });
+                    }
+                    conttraj++;
+                    contTrajTrial++;
+                    consoleLog(event.timeStamp + "(ms): click data saved ")
+
+                } else {
+                    feedbackText = 'Try again to select one arrow!'
+                    consoleLog('Try again to select arrow')
+                    drawText([(canvas.width / 2), (canvas.height / 10)], feedbackText, 30, 'red');
+                }
+                return;
+            }
+        
+            // left click to start
+            if (state.current===state.START && event.which===1 && PL==true) {
+               
+               // Only allow ball clicked timestamps and frame data to be written once
+               if(!ballClicked){
+                 trial.ballClickedTime = performance.now();
+                 timeStamps.ballClickedTimestamp[conttrial] = getFormattedDateObject().string;
+                 ballClicked = true;
+                 consoleLog(event.timeStamp + "(ms): ball clicked ")
+
+                 // Write ball clicked data to trial and TrajMatrix
+                 //trial.allTrajectories.push([event.timeStamp, blockNumber, trialNumber, cursor.delta[0], cursor.delta[1], cursor.cumDelta[0], cursor.cumDelta[1], cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current]);
+                 trajMatrix.data = [event.timeStamp, blockNumber, trialNumber, cursor.delta[0], cursor.delta[1], cursor.cumDelta[0], cursor.cumDelta[1], cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current];
+                 trajMatrix.conttraj = conttraj;
+                 trajMatrix.contTrajTrial = contTrajTrial;
+
+                 if(trial.postTaskQuestions){
+                    trajMatrix.trialNumber = 'trajMatrixPostQuestions';
+                 }
+
+                 // save the trial object, set flag in succesful callback
+                 if(useFirebase){
+                    firebaseTrialSave(trajMatrix, function() {
+                    saveSuccessful = true;
+                    trajMatrix.data = [];
+                    });
+                 }
+                 conttraj++;
+                 contTrajTrial++;
+                 consoleLog(event.timeStamp + "(ms): click data saved ")
+               }
+
+               if (cursor.disableMovement){
+                    cursor.disableMovement = false;
+               }
+
+            // right click to reset ball to home position
+            }else if (isMember(state.current, [state.START, state.GO, state.MOVING]) && event.which===3 && !trialEnded && ballClicked){ 
+              cursor.position = [...home.position];
+              cursor.actualPosition = [...home.position];
+              cursor.delta = [0, 0];
+              cursor.cumDelta = [0, 0];
+              cursor.angle = 0;
+              cursor.displayAngle = 0;
+              calculatedInitialAngle = false;
+              ballClicked = false;
+              XoutOfBounds = false;
+              YoutOfBounds = false;
+              setDisplayedCursorPosition();
+              numReleased++;
+              cursor.disableMovement = true;
+              state.next(state.START);
+            }
+        }
+      }
+
+      // This function is for touch click events 
+      function handleTouchClick(event){
+        if(inputdevice == "Touch"){
+            consoleLog("Touch Click Event: " + event.which)
+
+            // Added 7/19/2022
+            if (blockNumber == 7 && state.current >= state.START && state.current < state.RETURN){
+            
+                var selectedLeftArrow = true;
+                var selectedRightArrow = true;
+                let xy = getMousePos(glCanvas,event);
+                consoleLog("Touch Screen Position = " + xy)
+                let ray = raycastCanvas(xy[0],xy[1]);
+                let intersect = rayPlaneIntersect(ray, {normal: [0,0,1], point: floor.positions[0]});
+                consoleLog("Intersect = " + intersect)
+                //clickedOnBall = isHome([intersect[0],intersect[1]],home.position,cursor.radius);
+                selectedLeftArrow = isHome([intersect[0],intersect[1]],[leftArrow.positions[0][0]-4,leftArrow.positions[0][1]],8);
+                selectedRightArrow = isHome([intersect[0],intersect[1]],[rightArrow.positions[0][0]+4,rightArrow.positions[0][1]],8);
+
+                if (selectedLeftArrow){
+                    cursor.cross[0] = -10;
+                    trial.interpolatedEnd = [intersect[0],intersect[1]];
+                    consoleLog('Left Arrow Selected')
+
+                    trial.ballClickedTime = performance.now();
+                    timeStamps.ballClickedTimestamp[conttrial] = getFormattedDateObject().string;
+                    ballClicked = true;
+
+                    // Write ball clicked data to TrajMatrix
+                    //trial.allTrajectories.push([event.timeStamp, blockNumber, trialNumber, event.touches[0].clientX, event.touches[0].clientY, null, null, cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current]);
+                    trajMatrix.data = [event.timeStamp, blockNumber, trialNumber, event.touches[0].clientX, event.touches[0].clientY, null, null, cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current];
+                    trajMatrix.conttraj = conttraj;
+                    trajMatrix.contTrajTrial = contTrajTrial;
+                    trajMatrix.trialNumber = 'trajMatrixPostQuestions';
+
+                    // save the trial object, set flag in succesful callback
+                    if(useFirebase){
+                        firebaseTrialSave(trajMatrix, function() {
+                        saveSuccessful = true;
+                        trajMatrix.data = [];
+                        });
+                    }
+                    conttraj++;
+                    contTrajTrial++;
+                    consoleLog(event.timeStamp + "(ms): click data saved ")
+
+                } else if (selectedRightArrow){
+                    cursor.cross[0] = 10;
+                    trial.interpolatedEnd = [intersect[0],intersect[1]];
+                    consoleLog('Right Arrow Selected')
+
+                    trial.ballClickedTime = performance.now();
+                    timeStamps.ballClickedTimestamp[conttrial] = getFormattedDateObject().string;
+                    ballClicked = true;
+
+                    // Write ball clicked data to TrajMatrix
+                    //trial.allTrajectories.push([event.timeStamp, blockNumber, trialNumber, event.touches[0].clientX, event.touches[0].clientY, null, null, cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current]);
+                    trajMatrix.data = [event.timeStamp, blockNumber, trialNumber, event.touches[0].clientX, event.touches[0].clientY, null, null, cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current];
+                    trajMatrix.conttraj = conttraj;
+                    trajMatrix.contTrajTrial = contTrajTrial;
+                    trajMatrix.trialNumber = 'trajMatrixPostQuestions';
+
+                    // save the trial object, set flag in succesful callback
+                    if(useFirebase){
+                        firebaseTrialSave(trajMatrix, function() {
+                        saveSuccessful = true;
+                        trajMatrix.data = [];
+                        });
+                    }
+                    conttraj++;
+                    contTrajTrial++;
+                    consoleLog(event.timeStamp + "(ms): click data saved ")
+
+                } else {
+                    feedbackText = 'Try again to select one arrow!'
+                    consoleLog('Try again to select arrow')
+                    drawText([(canvas.width / 2), (canvas.height / 10)], feedbackText, 30, 'red');
+                }
+                return;
+            }
+
+            startTouch[0] = event.touches[0].clientX;
+            startTouch[1] = event.touches[0].clientY;
+
+            var clickedOnBall = true;
+            let xy = getMousePos(glCanvas,event);
+            let ray = raycastCanvas(xy[0],xy[1]);
+            let intersect = rayPlaneIntersect(ray, {normal: [0,0,1], point: floor.positions[0]});
+            //clickedOnBall = isHome([intersect[0],intersect[1]],home.position,cursor.radius);
+            clickedOnBall = isHome([intersect[0],intersect[1]],[home.position[0],home.position[1]+cursor.radius*2],cursor.radius*2); // Increased threshold for clicking ball
+
+            // click to start
+            if (state.current===state.START && event.which===0 && clickedOnBall) {
+             
+                // Only allow ball clicked timestamps to be written once
+                if(!ballClicked){
+                    trial.startTouchPosition.push(startTouch);
+                    trial.ballClickedTime = performance.now();
+                    timeStamps.ballClickedTimestamp[conttrial] = getFormattedDateObject().string;
+                    ballClicked = true;
+
+                    // Write ball clicked data to trial and TrajMatrix
+                    //trial.allTrajectories.push([event.timeStamp, blockNumber, trialNumber, event.touches[0].clientX, event.touches[0].clientY, null, null, cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current]);
+                    trajMatrix.data = [event.timeStamp, blockNumber, trialNumber, event.touches[0].clientX, event.touches[0].clientY, null, null, cursor.actualPosition[0], cursor.actualPosition[1], cursor.position[0], cursor.position[1], cursor.display[0], cursor.display[1], cursor.angle, cursor.displayAngle, numReleased, conttraj, state.current];
+                    trajMatrix.conttraj = conttraj;
+                    trajMatrix.contTrajTrial = contTrajTrial;
+
+                    if(trial.postTaskQuestions){
+                        trajMatrix.trialNumber = 'trajMatrixPostQuestions';
+                    }
+
+                    // save the trial object, set flag in succesful callback
+                    if(useFirebase){
+                        firebaseTrialSave(trajMatrix, function() {
+                        saveSuccessful = true;
+                        trajMatrix.data = [];
+                        });
+                    }
+                    conttraj++;
+                    contTrajTrial++;
+                    consoleLog(event.timeStamp + "(ms): click data saved ")
+                }
+
+                consoleLog("startTouch = " + startTouch)
+                if (cursor.disableMovement){
+                    cursor.disableMovement = false;
+                }
+            }
+        }
+      }
+
+      // This function is for touch release events 
+      function handleTouchRelease(event){
+        if(inputdevice == "Touch"){
+            consoleLog("Touch Release Event: " + event.which)
+            // release to reset ball to home position
+            if (isMember(state.current, [state.START, state.GO, state.MOVING]) && event.which===0 && !trialEnded && ballClicked){ 
+              cursor.position = [...home.position];
+              cursor.actualPosition = [...home.position];
+              cursor.angle = 0;
+              cursor.displayAngle = 0;
+              calculatedInitialAngle = false;
+              ballClicked = false;
+              XoutOfBounds = false;
+              YoutOfBounds = false;
+              setDisplayedCursorPosition_Touch();
+              numReleased++;
+              cursor.disableMovement = true;
+              state.next(state.START);
+            }
+        }
+      }
+
+      // This function is to set the displayed cursor position for mouse/trackpad inputs
+      function setDisplayedCursorPosition(){
+        // set the old cursor position (for figuring out if cursor went through something)
+        cursor.prevDisplay = [cursor.display[0], cursor.display[1]];
+
+        // compute cursor perturbation from actualPosition
+        var x = cursor.actualPosition[0] - home.position[0];
+        var y = cursor.actualPosition[1] - home.position[1];
+
+        // rotation matrix
+        var sa = Math.sin(trial.perturbation);
+        var ca = Math.cos(trial.perturbation);
+
+        // counter-rotation matrix
+        var sa_r = Math.sin(-trial.perturbation);
+        var ca_r = Math.cos(-trial.perturbation);
+
+        // rotate and clamp display ball to boundaries
+        var xRotated = home.position[0] + (x * ca - y * sa);
+        cursor.display[0] = clamp(xRotated, cursor.xmin, cursor.xmax);
+        var yRotated = home.position[1] + (x * sa + y * ca);
+        cursor.display[1] = clamp(yRotated, cursor.ymin, cursor.ymax);
+        
+        // Clamp Y rendered position to ydisplaymax
+        var yDisplayClamp = clamp(yRotated, cursor.ymin, cursor.ydisplaymax);
+
+        //consoleLog("xRotated = " + xRotated + " | " + "yRotated = " + yRotated + " | " + "yDisplayClamp = " + yDisplayClamp)
+        //consoleLog("cursor.display (setDisplayedCursorPosition) = " + cursor.display)
+
+        // Calculate Display Angle
+        // Vector A from default ball start position straight ahead (arbitrary Y displacement of 2 units in the +y)
+        var Ax = home.position[0] - home.position[0];
+        var Ay = 2 - home.position[1];
+
+        // Vector B from default ball start position to interpolated end position
+        var Bx = cursor.display[0] - home.position[0];
+        var By = cursor.display[1] - home.position[1];
+
+        var numerator = Ax * By - Bx * Ay;
+        var denominator = Ax * Bx + Ay * By;
+        var ratio = numerator / denominator;
+
+        var angleRad = Math.atan(ratio);
+        var angleDeg = (angleRad * 180) / Math.PI;
+
+        if(isNaN(angleDeg)){
+            cursor.displayAngle = 0; // error check for dividing by 0
+        } else{
+            cursor.displayAngle = angleDeg;
+        }
+        //consoleLog("cursor.displayAngle (setDisplayedCursorPosition) = "  + cursor.displayAngle)
+
+        
+        // Check if cursor has moved out of the bounds of the game
+        if (xRotated < cursor.xmin && !trialEnded){
+           XoutOfBounds = true;
+           cursor.position[0] = cursor.xmin;
+           feedbackText = 'Move away from the edge of the ice';
+           moveRightArrow.positions[0][2] = 0.1; // move to be visible above the game floor
+        } else if (xRotated > cursor.xmax && !trialEnded){
+           XoutOfBounds = true;
+           cursor.position[0] = cursor.xmax;
+           feedbackText = 'Move away from the edge of the ice';
+           moveLeftArrow.positions[0][2] = 0.1; // move to be visible above the game floor
+        } else {
+            XoutOfBounds = false;
+            moveRightArrow.positions[0][2] = -2; // move back below the game floor
+            moveLeftArrow.positions[0][2] = -2; // move back below the game floor
+        }
+        
+        if (yRotated < cursor.ymin && !trialEnded){
+           YoutOfBounds = true;
+           cursor.position[1] = cursor.ymin;
+           feedbackText = 'Move away from the edge of the ice';
+           moveUpArrow.positions[0][2] = 0.1; // move to be visible above the game floor
+        } else if (yRotated > cursor.ymax && !trialEnded){
+           YoutOfBounds = true;
+           cursor.position[1] = cursor.ymax;
+        }else {
+            YoutOfBounds = false;
+            moveUpArrow.positions[0][2] = -2; // move back below the game floor
+        }
+        
+        if( !XoutOfBounds && !YoutOfBounds && !trialEnded){
+            feedbackText = '';
+        }
+
+        // Interpolate the display X position if past the button plane
+        if (isMember(state.current, [state.START, state.GO, state.MOVING]) && !trialEnded && (cursor.display[1] > (trial.targetDistance))) {
+            trialEnded = true;
+            trial.endTrialTime = performance.now();
+            timeStamps.endTrialTimestamp[conttrial] = getFormattedDateObject().string;
+            cursor.cross = [...cursor.display];
+            trial.finalAngle = cursor.angle;
+            trial.finalDisplayAngle = cursor.displayAngle;
+            interpolateDisplay();
+            checkForTrialSuccess();
+        } 
+        
+        // Update display position only if trial did not end 
+        if (isMember(state.current, [state.START, state.GO, state.MOVING]) && !trialEnded){
+          // update the 3D cursor position used for rendering
+          cursor.positions[0][0] = cursor.display[0]
+          cursor.positions[0][1] = yDisplayClamp; // ball should not be displayed beyond the set Y value
+
+        } else if (state.current === state.ADVANCE || blockTransition) {
+          // update the 3D cursor position used for rendering to home position between trials
+          cursor.positions[0][0] = [...home.position][0];
+          cursor.positions[0][1] = [...home.position][1];
+
+          // reset cursor parameters changed if trial was unsuccessful 
+          cursor.positions[0][2] = cursor.scaleXYZ[0][2]/2;
+          cursor.orientations[0][0] = 0;
+        }
+      }
+
+      // This function is to set the displayed cursor position for mouse/trackpad inputs
+      function setDisplayedCursorPosition_Touch(){
+        // set the old cursor position (for figuring out if cursor went through something)
+        cursor.prevDisplay = [cursor.display[0], cursor.display[1]];
+        
+        // compute cursor perturbation
+        var x = cursor.actualPosition[0] - home.position[0];
+        var y = cursor.actualPosition[1] - home.position[1];
+        // rotation matrix
+        var sa = Math.sin(trial.perturbation);
+        var ca = Math.cos(trial.perturbation);
+        // counter-rotation matrix
+        var sa_r = Math.sin(-trial.perturbation);
+        var ca_r = Math.cos(-trial.perturbation);
+        
+        // rotate and clamp to boundaries
+        var xRotated = home.position[0] + (x * ca - y * sa);
+        cursor.display[0] = clamp(xRotated, cursor.xmin, cursor.xmax);
+        var yRotated = home.position[1] + (x * sa + y * ca);
+        cursor.display[1] = clamp(yRotated, cursor.ymin, cursor.ymax);
+        
+        // Clamp Y rendered position to ydisplaymax
+        var yDisplayClamp = clamp(yRotated, cursor.ymin, cursor.ydisplaymax);
+
+        consoleLog("xRotated = " + xRotated + " | " + "yRotated = " + yRotated + " | " + "yDisplayClamp = " + yDisplayClamp)
+        consoleLog("cursor.display (setDisplayedCursorPosition_Touch) = " + cursor.display)
+
+
+        // Calculate Display Angle
+        // Vector A from default ball start position straight ahead (arbitrary Y displacement of 2 units in the +y)
+        var Ax = home.position[0] - home.position[0];
+        var Ay = 2 - home.position[1];
+
+        // Vector B from default ball start position to interpolated end position
+        var Bx = cursor.display[0] - home.position[0];
+        var By = cursor.display[1] - home.position[1];
+
+        var numerator = Ax * By - Bx * Ay;
+        var denominator = Ax * Bx + Ay * By;
+        var ratio = numerator / denominator;
+
+        var angleRad = Math.atan(ratio);
+        var angleDeg = (angleRad * 180) / Math.PI;
+
+        if(isNaN(angleDeg)){
+            cursor.displayAngle = 0; // error check for dividing by 0
+        } else{
+            cursor.displayAngle = angleDeg;
+        }
+        consoleLog("cursor.displayAngle (setDisplayedCursorPosition_Touch) = "  + cursor.displayAngle)
+
+        // Check if cursor has moved out of the bounds of the game
+        if (xRotated < cursor.xmin && !trialEnded){
+           XoutOfBounds = true;
+           cursor.position[0] = cursor.xmin;
+           feedbackText = 'Move away from the edge of the ice';
+           moveRightArrow.positions[0][2] = 0.1; // move to be visible above the game floor
+        } else if (xRotated > cursor.xmax && !trialEnded){
+           XoutOfBounds = true;
+           cursor.position[0] = cursor.xmax;
+           feedbackText = 'Move away from the edge of the ice';
+           moveLeftArrow.positions[0][2] = 0.1; // move to be visible above the game floor
+        } else {
+            XoutOfBounds = false;
+            moveRightArrow.positions[0][2] = -2; // move back below the game floor
+            moveLeftArrow.positions[0][2] = -2; // move back below the game floor
+        }
+        
+        if (yRotated < cursor.ymin && !trialEnded){
+           YoutOfBounds = true;
+           cursor.position[1] = cursor.ymin;
+           feedbackText = 'Move away from the edge of the ice';
+           moveUpArrow.positions[0][2] = 0.1; // move to be visible above the game floor
+        } else if (yRotated > cursor.ymax && !trialEnded){
+           YoutOfBounds = true;
+           cursor.position[1] = cursor.ymax;
+        } else {
+            YoutOfBounds = false;
+            moveUpArrow.positions[0][2] = -2; // move back below the game floor
+        }
+        
+        if( !XoutOfBounds && !YoutOfBounds && !trialEnded){
+            feedbackText = '';
+        }
+
+        // Interpolate the display X position if Y target distance; check for trial success
+        if (isMember(state.current, [state.START, state.GO, state.MOVING]) && !trialEnded && (cursor.display[1] > (trial.targetDistance))) {
+            trialEnded = true;
+            trial.endTrialTime = performance.now();
+            timeStamps.endTrialTimestamp[conttrial] = getFormattedDateObject().string;
+            cursor.cross = [...cursor.display];
+            trial.finalAngle = cursor.angle;
+            trial.finalDisplayAngle = cursor.displayAngle;
+            interpolateDisplay();
+            checkForTrialSuccess();
+        } 
+        
+        // Update display position only if trial did not end 
+        if (isMember(state.current, [state.START, state.GO, state.MOVING]) && !trialEnded){
+          // update the 3D cursor position used for rendering
+          cursor.positions[0][0] = cursor.display[0]
+          cursor.positions[0][1] = yDisplayClamp; // ball should not be displayed beyond the set Y value
+        } else if (state.current === state.ADVANCE || blockTransition ) {
+          // update the 3D cursor position used for rendering to home position between trials
+          cursor.positions[0][0] = [...home.position][0];
+          cursor.positions[0][1] = [...home.position][1];
+
+          // reset cursor parameters changed if trial was unsuccessful 
+          cursor.positions[0][2] = cursor.scaleXYZ[0][2]/2;
+          cursor.orientations[0][0] = 0;
+        }
+      }
+
+      function calculateAngle(){
+        
+      // Vector A from default ball start position straight ahead (arbitrary Y displacement of 2 units in the +y)
+        var Ax = home.position[0] - home.position[0];
+        var Ay = 2 - home.position[1];
+
+        // Vector B from default ball start position to current cursor position (includes outside of game boundary) 
+        var Bx = cursor.actualPosition[0] - home.position[0];
+        var By = cursor.actualPosition[1] - home.position[1];
+
+        var numerator = Ax * By - Bx * Ay;
+        var denominator = Ax * Bx + Ay * By;
+        var ratio = numerator / denominator;
+
+        var angleRad = Math.atan(ratio);
+        var angleDeg = (angleRad * 180) / Math.PI;
+
+        if(isNaN(angleDeg)){
+            cursor.angle = 0; // error check for dividing by 0
+        } else{
+            cursor.angle = angleDeg;
+        }
+
+        // Calculate initial angle at the initial angle calculation point in the game enviornment
+        if(!calculatedInitialAngle && cursor.actualPosition[1] > initialAngleCalcPoint){
+           calculatedInitialAngle = true;
+           trial.initialAngle = angleDeg;
+        }
+    }
+
+      function interpolateDisplay(){
+        
+        // display position before the button plane
+        var pX1 = cursor.prevDisplay[0];
+        var pY1 = cursor.prevDisplay[1];
+
+        var pY2 = trial.targetDistance;
+
+        var pX3 = cursor.display[0];
+        var pY3 = cursor.display[1];
+
+        // Find cursor X position at the button plane
+        var pX2 = pX1 + ( ((pX3 - pX1) * (pY2 - pY1)) / (pY3 - pY1) );
+
+        // update the 3D cursor position used for rendering
+        cursor.positions[0][0] = pX2;
+        cursor.positions[0][1] = pY2;
+
+        endInterpolated = true;
+        trial.interpolatedEnd = [pX2,pY2];
+
+        consoleLog(conttraj + " | End Interpolated X Values: pX1 = " + pX1 + " pX2 = " + pX2 + " pX3 = " + pX3)
+        consoleLog(conttraj + " | End Interpolated Y Values: pY1 = " + pY1 + " pY2 = " + pY2 + " pY3 = " + pY3)
+
+
+        // Calculate Angle at interpolated end position
+        // Vector A from default ball start position straight ahead (arbitrary Y displacement of 2 units in the +y)
+        var Ax = home.position[0] - home.position[0];
+        var Ay = 2 - home.position[1];
+
+        // Vector B from default ball start position to interpolated end position
+        var Bx = pX2 - home.position[0];
+        var By = pY2 - home.position[1];
+
+        var numerator = Ax * By - Bx * Ay;
+        var denominator = Ax * Bx + Ay * By;
+        var ratio = numerator / denominator;
+
+        var angleRad = Math.atan(ratio);
+        var angleDeg = (angleRad * 180) / Math.PI;
+
+        if(isNaN(angleDeg)){
+            trial.interpolatedEndAngle = 0; // error check for dividing by 0
+        } else{
+            trial.interpolatedEndAngle = angleDeg;
+        }
+
+        consoleLog(conttraj + " | End Interpolated Angle  = " + angleDeg)
+      }
+
+      function checkForTrialSuccess(){
+
+        /* 
+        // Target Boundary Verion
+        // Use the X position of the displayed cursor to determine whether the trial was successful; target.boundaries defined per trial
+        if ( target.boundaries[0] < cursor.positions[0][0] && cursor.positions[0][0] < target.boundaries[1] ){
+                trial.buttonHit = target.buttonNumber;
+                cursor.hit = 1;
+                cursor.diffuseColor = [cursor.activeColor];
+        } else {
+                consoleLog(conttraj + ' | Not Successful')
+                cursor.hit = 0;
+                trial.buttonHit = 999;
+        }
+        */
+
+        if (resultChecked){
+            consoleLog(conttraj + ' | Probability Already Checked')    
+            return;
+        } else{
+            resultChecked = true;
+
+            if (blockNumber == 0){
+                
+                trial.buttonHit = 11;
+                //var threshold = penguinGroup.scaleXYZ[0][0]/2 - cursor.scaleXYZ[0][0]/4;
+                var threshold = successWidth/2;
+
+                // 100% reward for ending in the correct boundary
+                if( penguinGroup.positions[0][0]-threshold  < cursor.positions[0][0] && cursor.positions[0][0] < penguinGroup.positions[0][0]+threshold){
+                    trial.rewardProbability = 100;
+                    var result  = probability(trial.rewardProbability); // returns true or false
+            
+                    consoleLog(conttraj + ' | Probability: ' + trial.rewardProbability + ' | Result: ' + result)
+
+                    if (result){
+                        cursor.hit = 1;
+                        cursor.diffuseColor = [cursor.activeColor];
+                    } else{
+                        cursor.hit = 0;
+                    }
+                    return;
+                } else {
+                    trial.rewardProbability = 0;
+                    trial.randomNumber = 4;
+                    consoleLog(conttraj + ' | Not Successful')
+                    cursor.hit = 0;
+                    return;
+                }  
+            }
+
+            if(blockNumber == 1){
+                
+                trial.buttonHit = 22;
+
+                // Variables for Probability Gradiant
+                var slope = 7.0175;
+                var b1 = 201.7544; 
+                var b2 = 33.3333; 
+                var x_plateu = 1.1875;
+
+
+                if(cursor.xmin < cursor.positions[0][0] && cursor.positions[0][0] <= cursor.xmin*.5 - successWidth*.5 ){
+                    trial.rewardProbability = slope * cursor.positions[0][0] + b1;
+                    var result  = probability(trial.rewardProbability); // returns true or false
+            
+                    consoleLog(conttraj + ' | Probability: ' + trial.rewardProbability + ' | Result: ' + result)
+
+                    if (result){
+                        cursor.hit = 1;
+                        cursor.diffuseColor = [cursor.activeColor];
+                    } else{
+                        cursor.hit = 0;
+                    }
+                    return;
+
+                } else if (cursor.xmin*.5 - successWidth*.5 < cursor.positions[0][0] && cursor.positions[0][0] <= cursor.xmin*.5 + successWidth*.5 ){
+                    // 100% Reward
+                    trial.rewardProbability = 100;
+                    var result  = probability(trial.rewardProbability); // returns true or false
+            
+                    consoleLog(conttraj + ' | Probability: ' + trial.rewardProbability + ' | Result: ' + result)
+
+                    if (result){
+                        cursor.hit = 1;
+                        cursor.diffuseColor = [cursor.activeColor];
+                    } else{
+                        cursor.hit = 0;
+                    }
+                    return;
+
+                } else if (cursor.xmin*.5 + successWidth*.5 < cursor.positions[0][0] && cursor.positions[0][0] <= x_plateu){
+                    trial.rewardProbability = -slope * cursor.positions[0][0] + b2;
+                    var result  = probability(trial.rewardProbability); // returns true or false
+
+                    consoleLog(conttraj + ' | Probability: ' + trial.rewardProbability + ' | Result: ' + result)
+
+                    if (result){
+                        cursor.hit = 1;
+                        cursor.diffuseColor = [cursor.activeColor];
+                    } else{
+                        cursor.hit = 0;
+                    }
+                    return;
+
+                } else if (x_plateu < cursor.positions[0][0] && cursor.positions[0][0] < cursor.xmax){
+                    // 25% Reward
+                    trial.rewardProbability = 25;
+                    var result  = probability(trial.rewardProbability); // returns true or false
+
+                    consoleLog(conttraj + ' | Probability: ' + trial.rewardProbability + ' | Result: ' + result)
+
+                    if (result){
+                        cursor.hit = 1;
+                        cursor.diffuseColor = [cursor.activeColor];
+                    } else{
+                        cursor.hit = 0;
+                    }
+                    return;
+
+                } else {
+                    trial.rewardProbability = 0;
+                    trial.randomNumber = 4;
+                    consoleLog(conttraj + ' | Not Successful')
+                    cursor.hit = 0;
+                    return;
+                }
+            }
+            
+            if (blockNumber == 2){
+                
+                trial.buttonHit = 33;
+                
+                // 100% reward for all X positions
+                trial.rewardProbability = 100;
+                var result  = probability(trial.rewardProbability); // returns true or false
+            
+                consoleLog(conttraj + ' | Probability: ' + trial.rewardProbability + ' | Result: ' + result)
+
+                if (result){
+                    cursor.hit = 1;
+                    cursor.diffuseColor = [cursor.activeColor];
+                } else{
+                    cursor.hit = 0;
+                }
+                return;
+            }
+
+            if (blockNumber == 3){
+                
+                trial.buttonHit = 44;
+                
+                // 0% reward for all X positions
+                trial.rewardProbability = 0;
+                var result  = probability(trial.rewardProbability); // returns true or false
+            
+                consoleLog(conttraj + ' | Probability: ' + trial.rewardProbability + ' | Result: ' + result)
+
+                if (result){
+                    cursor.hit = 1;
+                    cursor.diffuseColor = [cursor.activeColor];
+                } else{
+                    cursor.hit = 0;
+                }
+                return;
+            }
+
+            if (blockNumber == 4){
+                
+                trial.buttonHit = 55;
+
+                //var threshold = penguinGroup.scaleXYZ[0][0]/2 - cursor.scaleXYZ[0][0]/4;
+                var threshold = successWidth/2;
+
+                // 100% reward for ending in the correct boundary
+                if((penguinGroup.positions[0][0] - threshold)  < cursor.positions[0][0] && cursor.positions[0][0] < penguinGroup.positions[0][0] + threshold){
+                    trial.rewardProbability = 100;
+                    var result  = probability(trial.rewardProbability); // returns true or false
+            
+                    consoleLog(conttraj + ' | Probability: ' + trial.rewardProbability + ' | Result: ' + result)
+
+                    if (result){
+                        cursor.hit = 1;
+                        cursor.diffuseColor = [cursor.activeColor];
+                    } else{
+                        cursor.hit = 0;
+                    }
+                    return;
+                } else{
+                    trial.rewardProbability = 0;
+                    trial.randomNumber = 4;
+                    consoleLog(conttraj + ' | Not Successful')
+                    cursor.hit = 0;
+                    return;
+                }
+            }
+
+            if (blockNumber == 5 || blockNumber == 6 || blockNumber == 7){
+                
+                trial.buttonHit = 66;
+
+                cursor.hit = 0;
+                cursor.diffuseColor = [cursor.activeColor];
+                trial.rewardProbability = 100;
+                consoleLog(conttraj + ' | Post Questions')
+            }
+
+        }
+      }
+
+      function probability(n){
+            trial.randomNumber =  Math.random();
+            return trial.randomNumber < n/100;
+      }
+
+
+    /**
+        * Allows to obtain the estimated Hz of the primary monitor in the system.
+        * 
+        * @param {Function} callback The function triggered after obtaining the estimated Hz of the monitor.
+        * @param {Boolean} runIndefinitely If set to true, the callback will be triggered indefinitely (for live counter).
+    
+        Source: https://ourcodeworld.com/articles/read/1390/how-to-determine-the-screen-refresh-rate-in-hz-of-the-monitor-with-javascript-in-the-browser
+    */ 
+    function getScreenRefreshRate(callback, runIndefinitely){
+        let requestId = null;
+        let callbackTriggered = false;
+        runIndefinitely = runIndefinitely || false;
+
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+        }
+    
+        let DOMHighResTimeStampCollection = [];
+
+        let triggerAnimation = function(DOMHighResTimeStamp){
+            DOMHighResTimeStampCollection.unshift(DOMHighResTimeStamp);
+        
+            if (DOMHighResTimeStampCollection.length > 10) {
+                let t0 = DOMHighResTimeStampCollection.pop();
+                let fps = Math.floor(1000 * 10 / (DOMHighResTimeStamp - t0));
+
+                if(!callbackTriggered){
+                    callback.call(undefined, fps, DOMHighResTimeStampCollection);
+                }
+
+                if(runIndefinitely){
+                    callbackTriggered = false;
+                }else{
+                    callbackTriggered = true;
+                }
+            }
+    
+            requestId = window.requestAnimationFrame(triggerAnimation);
+        };
+    
+        window.requestAnimationFrame(triggerAnimation);
+
+        // Stop after half second if it shouldn't run indefinitely
+        if(!runIndefinitely){
+            window.setTimeout(function(){
+                window.cancelAnimationFrame(requestId);
+                requestId = null;
+            }, 500);
+        }
+    }
+
+    function readDeviceOrientation() {
+        
+        if (bowser.parse(window.navigator.userAgent).browser.name === "Safari"){
+            consoleLog("Enter Safari orientation check")
+
+            if (Math.abs(window.orientation) !== 90) {
+                // Portrait
+                consoleLog("Please rotate your device back to landscape")
+                correctOrientation = false;
+
+                // If pre-Game
+                if(document.getElementById('homepage-content').style.display === 'block'){
+                    previousScreen = 'homepage-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientation-content').style.display = 'block';
+                }
+
+                // If on crash page 
+                if(document.getElementById('crash-content').style.display === 'block'){
+                    previousScreen = 'crash-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on crash data loaded page 
+                if(document.getElementById('crashDataLoaded-content').style.display === 'block'){
+                    previousScreen = 'crashDataLoaded-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on crash data not loaded page 
+                if(document.getElementById('crashDataNotLoaded-content').style.display === 'block'){
+                    previousScreen = 'crashDataNotLoaded-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on survey page 
+                if(document.getElementById('survey-content').style.display === 'block'){
+                    previousScreen = 'survey-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on block1 instructions page 
+                if(document.getElementById('block1_instructions-content').style.display === 'block'){
+                    previousScreen = 'block1_instructions-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on block2 instructions page 
+                if(document.getElementById('block2_instructions-content').style.display === 'block'){
+                    previousScreen = 'block2_instructions-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on block5 instructions page 
+                if(document.getElementById('block5_instructions-content').style.display === 'block'){
+                    previousScreen = 'block5_instructions-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on fullscreen prompt page
+                if(document.getElementById('fullscreen-content').style.display === 'block'){
+                    previousScreen = 'fullscreen-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on pointerlock prompt page
+                if(document.getElementById('pointerlock-content').style.display === 'block'){
+                    previousScreen = 'pointerlock-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If currently in trial
+                if(document.getElementById('trial-content').style.display === 'block'){
+                    previousScreen = 'trial-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on end early page
+                if(document.getElementById('endEarly-content').style.display === 'block'){
+                    previousScreen = 'endEarly-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on end page
+                if(document.getElementById('end-content').style.display === 'block'){
+                    previousScreen = 'end-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // Treat device rotation during the game as a touch release 
+                if(inputdevice == "Touch"){
+                    consoleLog("Device has been rotated from landscape")
+                
+                    // release to reset ball to home position
+                    if (isMember(state.current, [state.START, state.GO, state.MOVING]) && event.which===0 && !trialEnded && ballClicked){ 
+                        cursor.position = [...home.position];
+                        cursor.actualPosition = [...home.position];
+                        cursor.angle = 0;
+                        cursor.displayAngle = 0;
+                        calculatedInitialAngle = false;
+                        ballClicked = false;
+                        XoutOfBounds = false;
+                        YoutOfBounds = false;
+                        setDisplayedCursorPosition_Touch();
+                        numReleased++;
+                        cursor.disableMovement = true;
+                        state.next(state.START);
+                    }
+                }
+            } else {
+    	        // Landscape
+                correctOrientation = true;
+                consoleLog("Device is in the correct orientation")
+                
+                // If pre-game, set back to default homepage
+                if(preGameStart){
+                    document.getElementById('screenOrientation-content').style.display = 'none';
+                    document.getElementById('homepage-content').style.display = 'block';
+                } else { 
+                    // Go back to previous screen
+                    document.getElementById('screenOrientationChange-content').style.display = 'none';
+                    document.getElementById(previousScreen).style.display = 'block';
+                }
+            }
+        } else if (bowser.parse(window.navigator.userAgent).browser.name === "Chrome"){
+            consoleLog("Enter Chrome orientation check")
+
+            if (window.screen.orientation.type === "portrait-primary" || window.screen.orientation.type === "portrait-secondary"){
+                // Portrait
+                consoleLog("Please rotate your device back to landscape")
+                correctOrientation = false;
+
+                // If pre-Game
+                if(document.getElementById('homepage-content').style.display === 'block'){
+                    previousScreen = 'homepage-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientation-content').style.display = 'block';
+                }
+
+                // If on crash page 
+                if(document.getElementById('crash-content').style.display === 'block'){
+                    previousScreen = 'crash-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on crash data loaded page 
+                if(document.getElementById('crashDataLoaded-content').style.display === 'block'){
+                    previousScreen = 'crashDataLoaded-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on crash data not loaded page 
+                if(document.getElementById('crashDataNotLoaded-content').style.display === 'block'){
+                    previousScreen = 'crashDataNotLoaded-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on survey page 
+                if(document.getElementById('survey-content').style.display === 'block'){
+                    previousScreen = 'survey-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on block1 instructions page 
+                if(document.getElementById('block1_instructions-content').style.display === 'block'){
+                    previousScreen = 'block1_instructions-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on block2 instructions page 
+                if(document.getElementById('block2_instructions-content').style.display === 'block'){
+                    previousScreen = 'block2_instructions-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on block5 instructions page 
+                if(document.getElementById('block5_instructions-content').style.display === 'block'){
+                    previousScreen = 'block5_instructions-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on fullscreen prompt page
+                if(document.getElementById('fullscreen-content').style.display === 'block'){
+                    previousScreen = 'fullscreen-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on pointerlock prompt page
+                if(document.getElementById('pointerlock-content').style.display === 'block'){
+                    previousScreen = 'pointerlock-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If currently in trial
+                if(document.getElementById('trial-content').style.display === 'block'){
+                    previousScreen = 'trial-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on end early page
+                if(document.getElementById('endEarly-content').style.display === 'block'){
+                    previousScreen = 'endEarly-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // If on end page
+                if(document.getElementById('end-content').style.display === 'block'){
+                    previousScreen = 'end-content';
+                    document.getElementById(previousScreen).style.display = 'none';
+                    document.getElementById('screenOrientationChange-content').style.display = 'block';
+                }
+
+                // Treat device rotation during the game as a touch release 
+                if(inputdevice == "Touch"){
+                    consoleLog("Device has been rotated from landscape")
+                
+                    // release to reset ball to home position
+                    if (isMember(state.current, [state.START, state.GO, state.MOVING]) && event.which===0 && !trialEnded && ballClicked){ 
+                        cursor.position = [...home.position];
+                        cursor.actualPosition = [...home.position];
+                        cursor.angle = 0;
+                        cursor.displayAngle = 0;
+                        calculatedInitialAngle = false;
+                        ballClicked = false;
+                        XoutOfBounds = false;
+                        YoutOfBounds = false;
+                        setDisplayedCursorPosition_Touch();
+                        numReleased++;
+                        cursor.disableMovement = true;
+                        state.next(state.START);
+                    }
+                }
+            } else if ( window.screen.orientation.type === "landscape-primary" || window.screen.orientation.type === "landscape-secondary"){
+    	        // Landscape
+                correctOrientation = true;
+                consoleLog("Device is in the correct orientation")
+
+                // If pre-game, set back to default homepage
+                if(preGameStart){
+                    document.getElementById('screenOrientation-content').style.display = 'none';
+                    document.getElementById('homepage-content').style.display = 'block';
+                } else { 
+                    // Go back to previous screen
+                    document.getElementById('screenOrientationChange-content').style.display = 'none';
+                    document.getElementById(previousScreen).style.display = 'block';
+                }
+
+            } else{
+                consoleLog("The orientation API isn't supported in this browser :(")
+            }
+        }
+    }
+
+    function videos(){
+
+        var urls = ["https://media.giphy.com/media/j80foFNSOVrKo/giphy.mp4",
+                    "https://media.giphy.com/media/opqIeAldL5NII/giphy.mp4",
+                    "https://media.giphy.com/media/PivUZ0zExEtGcydc2D/giphy.mp4",
+                    "https://media.giphy.com/media/tSc1a4mxzRB6g/giphy.mp4",
+                    "https://media.giphy.com/media/HVTOrIRuYy8Qo/giphy.mp4",
+                    "https://media.giphy.com/media/UJicODs7ArC9O/giphy.mp4",
+                    "https://media.giphy.com/media/UKsFxyjRxTaP6/giphy.mp4",
+                    "https://media.giphy.com/media/heWR2b0XV2Nvq/giphy.mp4",
+                    "https://media.giphy.com/media/13fp0SNp60Hwk0/giphy.mp4",
+                    "https://media.giphy.com/media/oKXxbD1vjE8Fy/giphy.mp4",
+                    "https://media.giphy.com/media/27lCYLGnQ2RZm/giphy.mp4",
+                    "https://media.giphy.com/media/MG6pAoL7co9Nu/giphy.mp4",
+                    "https://media.giphy.com/media/g25D24g41k3oQ/giphy.mp4",
+                    "https://media.giphy.com/media/3oz8xZf6yStcrtIncI/giphy.mp4",
+                    "https://media.giphy.com/media/4yK3Vl65YhwNa/giphy.mp4",
+                    "https://media.giphy.com/media/qCx88i7ei70cM/giphy.mp4",
+                    "https://media.giphy.com/media/IgLt8tZcGGYXS/giphy.mp4",
+                    "https://media.giphy.com/media/hyTFIrQpwas6c/giphy.mp4",
+                    "https://media.giphy.com/media/Fugjn5yobr0d2/giphy.mp4",
+                    "https://media.giphy.com/media/Ag5MfFfvcHd8k/giphy.mp4",
+                    "https://media.giphy.com/media/xgrbRyyrz4RZS/giphy.mp4",
+                    "https://media.giphy.com/media/RWCaYbypldkwE/giphy.mp4",
+                    "https://media.giphy.com/media/5guYctWhB0FxK/giphy.mp4",
+                    "https://media.giphy.com/media/wIJejHmpXRNj4Px1bD/giphy.mp4",
+                    "https://media.giphy.com/media/ff748OtDfBwuk/giphy.mp4",
+                    "https://media.giphy.com/media/WRWstd09k55eg/giphy.mp4",
+                    "https://media.giphy.com/media/iVPuLpCFbMiM8/giphy.mp4",
+                    "https://media.giphy.com/media/ClSRyYPD364NO/giphy.mp4",
+                    "https://media.giphy.com/media/8A0tsbRCALBDO/giphy.mp4",
+                    "https://media.giphy.com/media/770WN0X9Wq5mE/giphy.mp4",
+                    "https://media.giphy.com/media/3oriNYroyEyMgGGt0Y/giphy.mp4",
+                    "https://media.giphy.com/media/QSLtvOL02ggyA/giphy.mp4",
+                    "https://media.giphy.com/media/Cy5Gl9aiRsYg/giphy.mp4",
+                    "https://media.giphy.com/media/2BA9Kpwm9KxaM/giphy.mp4",
+                    "https://media.giphy.com/media/GFklenxHiTNio/giphy.mp4",
+                    "https://media.giphy.com/media/718O0LEk4xDxK/giphy.mp4",
+                    "https://media.giphy.com/media/BhzQ7bda46OM8/giphy.mp4",
+                    "https://media.giphy.com/media/gNqPZGiwsZs9a/giphy.mp4",
+                    "https://media.giphy.com/media/BbY6OCPOwnunK/giphy.mp4",
+                    "https://media.giphy.com/media/IhOpBpN5DZ3pjEK21O/giphy.mp4",
+                    "https://media.giphy.com/media/NLIywQvuBKQ9y/giphy.mp4",
+                    "https://media.giphy.com/media/DYuoXR2GGKpDW/giphy.mp4",
+                    "https://media.giphy.com/media/Qgeg0wsKtgMjm/giphy.mp4",
+                    "https://media.giphy.com/media/n5YajTggvim3e/giphy.mp4",
+                    "https://media.giphy.com/media/l4KiaigrjUUjbXh16/giphy.mp4",
+                    "https://media.giphy.com/media/4lqhlpZC1oBO0/giphy.mp4",
+                    "https://media.giphy.com/media/kdMm8cWwsqUvK/giphy.mp4",
+                    "https://media.giphy.com/media/FfJOY5DrUfzHy/giphy.mp4",
+                    "https://media.giphy.com/media/l2JhKvjpzqViGyi8U/giphy.mp4",
+                    "https://media.giphy.com/media/vaX1jzA99qLSg/giphy.mp4",
+                    "https://media.giphy.com/media/Fes6DoCruaz7i/giphy.mp4",
+                    "https://media.giphy.com/media/kbiaO7yUik591kqlgj/giphy.mp4",
+                    "https://media.giphy.com/media/EBPYB0yzuLBEQ/giphy.mp4",
+                    "https://media.giphy.com/media/MN4o9qwvVr6W4/giphy.mp4",
+                    "https://media.giphy.com/media/12ZKDG6HAsXra/giphy.mp4",
+                    "https://media.giphy.com/media/kRvk2q1M6iXRK/giphy.mp4",
+                    "https://media.giphy.com/media/oVodxyUvwYotFVMncm/giphy.mp4",
+                    "https://media.giphy.com/media/HlGY78zO1NDuo/giphy.mp4",
+                    "https://media.giphy.com/media/ZbR6iynJKufE4/giphy.mp4",
+                    "https://media.giphy.com/media/QE6Ql9i2RgXao/giphy.mp4",
+                    "https://media.giphy.com/media/Vhicw1BYBfIdi/giphy.mp4",
+                    "https://media.giphy.com/media/DvfTp8qhBbLE3fUAVF/giphy.mp4",
+                    "https://media.giphy.com/media/3aIGjbZ6kWe1q/giphy.mp4",
+                    "https://media.giphy.com/media/sJDRvA5IgBSve/giphy.mp4",
+                    "https://media.giphy.com/media/jIY3KEikFKgrm/giphy.mp4",
+                    "https://media.giphy.com/media/qmkYNFprqZJ96/giphy.mp4",
+                    "https://media.giphy.com/media/2Xx7L2qVND6fe/giphy.mp4",
+                    "https://media.giphy.com/media/elhRcmg7jVTVcVUkto/giphy.mp4",
+                    "https://media.giphy.com/media/JEhCPFfqi2Hy8/giphy.mp4",
+                    "https://media.giphy.com/media/RQFlNURtNPwic/giphy.mp4",
+                    "https://media.giphy.com/media/13kfHhFYIi3viw/giphy.mp4",
+                    "https://media.giphy.com/media/26ufcipfaa4Gh2vjG/giphy.mp4",
+                    "https://media.giphy.com/media/7zAvxywgjpwgU/giphy.mp4",
+                    "https://media.giphy.com/media/OIWGNtLWpWKPK/giphy.mp4",
+                    "https://media.giphy.com/media/W55xrlzLAjHX2/giphy.mp4",
+                    "https://media.giphy.com/media/t5bpgRjxPQYTe/giphy.mp4",
+                    "https://media.giphy.com/media/nV6ZOcHySrHX2/giphy.mp4",
+                    "https://media.giphy.com/media/d31vksaCuYvCSpMI/giphy.mp4",
+                    "https://media.giphy.com/media/W09D2xwt0OwKc/giphy.mp4",
+                    "https://media.giphy.com/media/U8DRoffzW12De/giphy.mp4",
+                    "https://media.giphy.com/media/eNdZS6wyF4u9G/giphy.mp4",
+                    "https://media.giphy.com/media/lMa8QX6qZN08ndWL0e/giphy.mp4",
+                    "https://media.giphy.com/media/1B4Iv2xqfJcGs/giphy.mp4",
+                    "https://media.giphy.com/media/fsawdRIMJPCAOJwsVk/giphy.mp4",
+                    "https://media.giphy.com/media/ZU5Fea9kn3Pl6/giphy.mp4",
+                    "https://media.giphy.com/media/YVFhziweJcFfa/giphy.mp4",
+                    "https://media.giphy.com/media/10VDn6dLpxA9nW/giphy.mp4",
+                    "https://media.giphy.com/media/InQdAicbxUEyQ/giphy.mp4",
+                    "https://media.giphy.com/media/26ufgIv8eSa3qp8J2/giphy.mp4",
+                    "https://media.giphy.com/media/tfrXPmM2b3tC/giphy.mp4",
+                    "https://media.giphy.com/media/aB4IFicT0YhXO/giphy.mp4",
+                    "https://media.giphy.com/media/Q8EuwvkC6Zavu/giphy.mp4",
+                    "https://media.giphy.com/media/3o6ozglbFoo09O0Sli/giphy.mp4",
+                    "https://media.giphy.com/media/biNn8j4VKIzYc/giphy.mp4",
+                    "https://media.giphy.com/media/tGXh4RTQSzpYc/giphy.mp4",
+                    "https://media.giphy.com/media/XW84K7p8gu20E/giphy.mp4",
+                    "https://media.giphy.com/media/eKDfWXoZiYe6Tje9Ea/giphy.mp4",
+                    "https://media.giphy.com/media/XmeNoGkNfRsCQ/giphy.mp4",
+                    "https://media.giphy.com/media/LO3eXdAocudz2/giphy.mp4",
+                    "https://media.giphy.com/media/lP0Iey7rgJHi0/giphy.mp4",
+                    "https://media.giphy.com/media/oAI9FNrw2mSac/giphy.mp4",
+                    "https://media.giphy.com/media/sFFeMtSDVthks/giphy.mp4",
+                    "https://media.giphy.com/media/RaNAnl2DrVbMI/giphy.mp4",
+                    "https://media.giphy.com/media/3o7TKERr1UFmalFZKw/giphy.mp4",
+                    "https://media.giphy.com/media/i7edluGwIuiL6/giphy.mp4",
+                    "https://media.giphy.com/media/nJ2PObJA3EVgc/giphy.mp4",
+                    "https://media.giphy.com/media/11OoTctG5cjn0s/giphy.mp4",
+                    "https://media.giphy.com/media/YnlHIoxpnyFsk/giphy.mp4",
+                    "https://media.giphy.com/media/GpUn4olq6xjP2/giphy.mp4",
+                    "https://media.giphy.com/media/TzoUxq2seGGIw/giphy.mp4",
+                    "https://media.giphy.com/media/NAhEcmzeH7Try/giphy.mp4",
+                    "https://media.giphy.com/media/OEDys4VMQ9QsM/giphy.mp4",
+                    "https://media.giphy.com/media/iayuIQUL4xmCs/giphy.mp4",
+                    "https://media.giphy.com/media/J6U8BNS44T17oCehBz/giphy.mp4",
+                    "https://media.giphy.com/media/9rMvwuIpMBKU0/giphy.mp4",
+                    "https://media.giphy.com/media/rCmC12OWz9kTS/giphy.mp4",
+                    "https://media.giphy.com/media/nCAy4hwMCsEyA/giphy.mp4",
+                    "https://media.giphy.com/media/duJTOfs3PW5Xy/giphy.mp4",
+                    "https://media.giphy.com/media/BEvVsk0v0JM6k/giphy.mp4",
+                    "https://media.giphy.com/media/UYhTZ8SMzLceQ/giphy.mp4",
+                    "https://media.giphy.com/media/s3wA2BVXcFgJ2/giphy.mp4",
+                    "https://media.giphy.com/media/1aZkbDPnR5LYQ/giphy.mp4",
+                    "https://media.giphy.com/media/xcymn33ucu4M0/giphy.mp4",
+                    "https://media.giphy.com/media/5cAqRhdiL4guI/giphy.mp4",
+                    "https://media.giphy.com/media/VrQx2SohkbGHC/giphy.mp4",
+                    "https://media.giphy.com/media/m93LJkUU866ORIhU8O/giphy.mp4",
+                    "https://media.giphy.com/media/iS7BWPRZO0Soo/giphy.mp4",
+                    "https://media.giphy.com/media/4TljvLtcDEkKs/giphy.mp4",
+                    "https://media.giphy.com/media/4HJlIUdZMdGFO/giphy.mp4",
+                    "https://media.giphy.com/media/xT1XGZhiefl2iXKRBS/giphy.mp4",
+                    "https://media.giphy.com/media/xqHZqKYUjcJXO/giphy.mp4",
+                    "https://media.giphy.com/media/jTXvL4LjakYI8/giphy.mp4",
+                    "https://media.giphy.com/media/Hp4lpOT1Ns60o/giphy.mp4",
+                    "https://media.giphy.com/media/6lzn8RlCj3Npm/giphy.mp4",
+                    "https://media.giphy.com/media/2YGTfh3QpayuQ/giphy.mp4",
+                    "https://media.giphy.com/media/QOzuHImmKNX8c/giphy.mp4",
+                    "https://media.giphy.com/media/hRHhWMkbb7mzm/giphy.mp4",
+                    "https://media.giphy.com/media/GBEBuGTqKP3tC/giphy.mp4",
+                    "https://media.giphy.com/media/d8FCVcztjbJfMyvAbh/giphy.mp4",
+                    "https://media.giphy.com/media/QxNFBs38pmSmQ/giphy.mp4",
+                    "https://media.giphy.com/media/Xo8p9phgs742I/giphy.mp4",
+                    "https://media.giphy.com/media/g3AWnQ8Fwcmpq/giphy.mp4",
+                    "https://media.giphy.com/media/QFypAZbq5lz3i/giphy.mp4",
+                    "https://media.giphy.com/media/MHreYunWv5O3S/giphy.mp4",
+                    "https://media.giphy.com/media/mpRYLk0ACWAP6/giphy.mp4",
+                    "https://media.giphy.com/media/WFEZyFxxmZ0Vq/giphy.mp4",
+                    "https://media.giphy.com/media/32s0tpTTTZNOU/giphy.mp4",
+                    "https://media.giphy.com/media/U1keBkXnIeiY0/giphy.mp4",
+                    "https://media.giphy.com/media/Iv5BPnvKRKLZu/giphy.mp4",
+                    "https://media.giphy.com/media/3oD3YMYRPCVrP2a9K8/giphy.mp4",
+                    "https://media.giphy.com/media/4h15cAhLXjuJG/giphy.mp4",
+                    "https://media.giphy.com/media/iYWKG2TGjCepW/giphy.mp4",
+                    "https://media.giphy.com/media/dTWNSIL9is0Tbt3b1Q/giphy.mp4",
+                    "https://media.giphy.com/media/cHG683IB16ZSU/giphy.mp4",
+                    "https://media.giphy.com/media/l0HlVf31a8sTRDWVi/giphy.mp4",
+                    "https://media.giphy.com/media/l0MYrhvf7Y2FRqpnG/giphy.mp4",
+                    "https://media.giphy.com/media/xUPGcmrcibFp4dpwhq/giphy.mp4",
+                    "https://media.giphy.com/media/3o7qE2fPuzqQWbu7Ti/giphy.mp4",
+                    "https://media.giphy.com/media/d2YWo2bU0OErxrTq/giphy.mp4",
+                    "https://media.giphy.com/media/dBOVK7ZLDicUVZeguo/giphy.mp4",
+                    "https://media.giphy.com/media/Sr94eSI8C15Aq3XApQ/giphy.mp4",
+                    "https://media.giphy.com/media/CJywPvSt4JE0E/giphy.mp4",
+                    "https://media.giphy.com/media/l2SpUEcP2G3VAgBW0/giphy.mp4",
+                    "https://media.giphy.com/media/3o7qDRiijR9ytzjHP2/giphy.mp4",
+                    "https://media.giphy.com/media/3o7qEaBjKQAH4LCRxK/giphy.mp4",
+                    "https://media.giphy.com/media/c9hhguaMSNj9K/giphy.mp4",
+                    "https://media.giphy.com/media/sB3lGlcNfNu36/giphy.mp4",
+                    "https://media.giphy.com/media/oh1N3YDant3Ne/giphy.mp4",
+                    "https://media.giphy.com/media/Yl4hiDaOc80rS/giphy.mp4",
+                    "https://media.giphy.com/media/xUPGclaTT7knw1O9LW/giphy.mp4",
+                    "https://media.giphy.com/media/Jf9mTOiFs9vzO/giphy.mp4",
+                    "https://media.giphy.com/media/LCjdJP9o3r6jS/giphy.mp4",
+                    "https://media.giphy.com/media/Tg0DAW8EJW8IU/giphy.mp4",
+                    "https://media.giphy.com/media/nGZSSlzkWYAwM/giphy.mp4",
+                    "https://media.giphy.com/media/ilISpQ490SiHu/giphy.mp4",
+                    "https://media.giphy.com/media/N7D0SiP96OptC/giphy.mp4",
+                    "https://media.giphy.com/media/PJuWsfOXWOpZC/giphy.mp4",
+                    "https://media.giphy.com/media/10OssZksriH2r6/giphy.mp4",
+                    "https://media.giphy.com/media/vf6OAgJtEI10Y/giphy.mp4",
+                    "https://media.giphy.com/media/Or7jwLWwOY6vC/giphy.mp4",
+                    "https://media.giphy.com/media/pHpO6rnxsVyP6/giphy.mp4",
+                    "https://media.giphy.com/media/Jisl24Dwj8pNe/giphy.mp4",
+                    "https://media.giphy.com/media/XQEGoW9NLVVQY/giphy.mp4",
+                    "https://media.giphy.com/media/ovzkPPq1TPsR2/giphy.mp4",
+                    "https://media.giphy.com/media/HpxMprlVHr2De/giphy.mp4",
+                    "https://media.giphy.com/media/lpsygefxbnrkA/giphy.mp4",
+                    "https://media.giphy.com/media/EnbIg1elWrClG/giphy.mp4",
+                    "https://media.giphy.com/media/uym9sd5fTTaOA/giphy.mp4",
+                    "https://media.giphy.com/media/hG4PIXqLEQ0VO/giphy.mp4",
+                    "https://media.giphy.com/media/oFRj8XTNwG8Bq/giphy.mp4",
+                    "https://media.giphy.com/media/wNDa1OZtvl6Fi/giphy.mp4",
+                    "https://media.giphy.com/media/CfM5LZjbIRrj2/giphy.mp4",
+                    "https://media.giphy.com/media/WT16t1bCbJCQ8/giphy.mp4",
+                    "https://media.giphy.com/media/84ZzhsJZWlE3e/giphy.mp4",
+                    "https://media.giphy.com/media/KAcuYHOBjG6DS/giphy.mp4",
+                    "https://media.giphy.com/media/j90b2D9XoF1qo/giphy.mp4",
+                    "https://media.giphy.com/media/58uV58zBKbTLq/giphy.mp4",
+                    "https://media.giphy.com/media/1E6Fxt79yoZmU/giphy.mp4",
+                    "https://media.giphy.com/media/103LfjRxTvCZCU/giphy.mp4"];
+
+        return urls;
+    }
+
+    </script>
+  </body>
+
+</html>
